@@ -1,0 +1,355 @@
+================================================================================
+VOID — EDITORIAL STREETWEAR E-COMMERCE PLATFORM
+COMPLETE PROJECT SUMMARY & ARCHITECTURAL SPECIFICATION
+================================================================================
+
+Brand: VOID
+Tagline: "Wear Your Own Identity."
+Category: Premium Unisex Experimental Streetwear
+Tech Stack: React 19 + TypeScript + Vite + Tailwind CSS + React Router v7 + Lucide React
+Repository Location: D:\Projects\Void
+Generated Date: 2026-10-19
+
+--------------------------------------------------------------------------------
+TABLE OF CONTENTS
+--------------------------------------------------------------------------------
+1. EXECUTIVE SUMMARY & BRAND IDENTITY
+2. DESIGN SYSTEM & DESIGN TOKENS
+3. APPLICATION ROUTING & PAGE SPECIFICATIONS
+4. THE COMPLETE CATALOG & SIGNATURE PIECES
+5. COMPONENT SYSTEM INVENTORY (21 REUSABLE COMPONENTS)
+6. STATE MANAGEMENT & CLIENT ARCHITECTURE
+7. API SERVICE LAYER & DATA CONTRACTS
+8. BACKEND INTEGRATION SPECIFICATIONS & FUTURE ROADMAP
+9. BUILD & PRODUCTION STATUS
+
+================================================================================
+1. EXECUTIVE SUMMARY & BRAND IDENTITY
+================================================================================
+VOID is conceived as an independent, brutalist unisex streetwear archive and 
+atelier that challenges fast-fashion commercialism and generic SaaS e-commerce 
+templates. 
+
+The visual and conceptual identity is rooted in:
+- High-fashion campaign editorial photography.
+- Asymmetric, art-directed layouts alternating between dark industrial concrete
+  surfaces and warm ivory editorial panels.
+- Brutalist typography scales with oversized display headlines and technical
+  monospaced metadata.
+- Fluid unisex proportions based on weight, drop, and silhouette rather than gender.
+- A strict "Zero Restocks Protocol" where collections release in limited sequential 
+  waves that migrate to the permanent archive once allocation is exhausted.
+
+================================================================================
+2. DESIGN SYSTEM & DESIGN TOKENS
+================================================================================
+Configured in:
+- frontend/tailwind.config.js
+- frontend/src/index.css
+- frontend/index.html (Google Fonts Integration)
+
+A. COLOR PALETTE
+- Deep Black (#0B0B0B): Primary canvas frame, outer textured backdrop, statement section.
+- Charcoal (#202020): Subtle industrial borders, panel framing, secondary cards.
+- Warm Ivory (#F0F0ED): The primary editorial panel canvas, giving a high-fashion lookbook aesthetic.
+- Pale Grey (#D1D3D2): Image stages, neutral card backgrounds, subtle typography.
+- Medium Grey (#777777): Technical monospaced labels, wave numbers, and coordinate codes.
+- White (#FFFFFF): High-contrast statement headlines and crisp accents.
+
+B. TYPOGRAPHY HIERARCHY
+- Display Typeface (Syne, Weight 800): Used for oversized campaign statements 
+  (e.g., "VOID IS NOT JUST WHAT YOU WEAR.", "MORE THAN WHAT YOU WEAR.").
+- Heading Typeface (Space Grotesk, Weights 600/700): Geometric uppercase sans-serif 
+  used for titles, pill buttons, and section headers.
+- Body Copy (Inter, Weights 300/400/500): Razor-sharp readability across editorial paragraphs.
+- Technical / Micro Data (JetBrains Mono): Used for SKUs, wave identifiers [W01-W05], 
+  specifications, and countdowns.
+
+C. TEXTURE & MOTION SYSTEM
+- Industrial Concrete & Fine Grain: A non-blocking, zero-network SVG turbulence 
+  pattern (fine-grain-overlay, industrial-texture-bg) layered over radial gradients.
+- Motion Direction: Staggered initial reveals, smooth 22s marquee tickers, 
+  restrained image hover zoom (scale-105), and full prefers-reduced-motion accessibility.
+
+================================================================================
+3. APPLICATION ROUTING & PAGE SPECIFICATIONS
+================================================================================
+Routes are declared in frontend/src/App.tsx with route-change scroll-to-top helpers.
+
+--------------------------------------------------------------------------------
+ROUTE: / (LANDING PAGE)
+File: frontend/src/pages/LandingPage.tsx
+--------------------------------------------------------------------------------
+The centerpiece landing page is framed within a distressed industrial concrete 
+canvas and is composed of six distinct sections:
+
+1. Top Ticker Marquee:
+   Infinite horizontal ticker: "VOID — WEAR YOUR OWN IDENTITY ■ MONOCHROME SILHOUETTES ■ ZERO RESTOCKS PROTOCOL ■ DROP 01 // FORM IN MOTION"
+
+2. Section 1 — Editorial Hero (LandingHero.tsx):
+   - Integrated compact top navigation: VOID wordmark, anchor links (Collection, Manifesto, Drop 01, Lookbook), external shop link, bag counter, and mobile menu drawer.
+   - Left stage: Micro label "ISSUE NO. 01 • UNISEX SILHOUETTE STUDY", massive display headline "VOID IS NOT JUST WHAT YOU WEAR.", supporting line "STREETWEAR FOR THOSE WHO DEFINE THEIR OWN IDENTITY.", editorial narrative, pill CTA "( EXPLORE THE COLLECTION )", and tagline metadata.
+   - Right stage: Large vertical monochrome campaign photograph of a model in the Ballistic Monolith Parka with staggered reveal animation.
+
+3. Section 2 — Collection Editorial Grid (EditorialGrid.tsx):
+   - Asymmetric 4-tile masonry lookbook with portrait and landscape crops:
+     * Tile 1: [01 / FORM] STRUCTURED SILHOUETTES (heavy wool coat)
+     * Tile 2: [02 / UTILITY] CITY UNIFORM (tactical Cordura layering)
+     * Tile 3: [03 / TONE] MONOCHROME STUDY (deconstructed tailoring)
+     * Tile 4: [04 / VOLUME] OVERSIZED FORMS (700gsm cotton loopback)
+   - Pill CTA: "( VIEW COLLECTION )"
+
+4. Section 3 — Statement Banner (StatementBanner.tsx):
+   - Dramatic full-width campaign section with smoky monochrome background.
+   - Huge white statement headline: "MORE THAN WHAT YOU WEAR."
+   - Manifesto copy on constructing armor for individuality.
+   - Pill CTA: "( EXPLORE VOID )"
+
+5. Section 4 — Drop Announcement (DropAnnouncement.tsx):
+   - Headline: "DROP 01 // FORM IN MOTION"
+   - Subtitle: "A study in proportion, texture, and everyday uniform."
+   - Detailed fabrication specifications: 620gsm bonded wool, 500D Cordura, unisex volumetric drapery.
+   - Editorial image: Oversized kimono coat study.
+   - CTA: "( EXPLORE THE DROP )" (Zero fabricated launch dates or fake stock claims).
+
+6. Section 5 — Product / Lookbook Strip (LookbookStrip.tsx):
+   - 5-column horizontal strip of signature garments with micro-codes, category tags, titles, and real pricing.
+
+7. Section 6 — Landing Footer (LandingFooter.tsx):
+   - Minimal deep-black footer with VOID wordmark, tagline, directory links, social signals (@void.atelier), and smooth scroll-to-top action.
+
+--------------------------------------------------------------------------------
+ROUTE: /shop (CATALOG & ARCHIVE DIRECTORY)
+File: frontend/src/pages/ShopPage.tsx
+--------------------------------------------------------------------------------
+- Real-time catalog populated through the API service layer.
+- Category quick-filter tabs: All Silhouettes, Outerwear, Tailoring, Knitwear, Bottoms, Accessories.
+- Search query handling (e.g., ?search=parka).
+- Slide-out FilterDrawer supporting sorting (newest, price ascending, price descending, featured), valuation range inputs (min/max price), and categories.
+- Active query protocol banners with clear search controls.
+- Integrated breadcrumbs and responsive ProductGrid.
+
+--------------------------------------------------------------------------------
+ROUTE: /product/:slug (PRODUCT DETAIL PAGE)
+File: frontend/src/pages/ProductDetailPage.tsx
+--------------------------------------------------------------------------------
+- Asymmetric layout with multi-image gallery (thumbnails + high-res viewport).
+- Technical SKU, drop, and wave metadata.
+- PriceDisplay with original valuation support.
+- ColorSelector: Swatches for Monolith Black, Raw Slate, Concrete Grey, Warm Ivory, Stone Bone.
+- SizeSelector: Unisex numbered sizing (01 S, 02 M, 03 L, 04 XL, or ONE SIZE).
+- QuantitySelector stepper.
+- "ACQUIRE PIECE // ADD TO BAG" CTA + Heart Wishlist toggle button.
+- Architectural Specifications list, Composition & Fabrication details, and Proportion & Fit guidance.
+- Protocol guarantees: Secure Express Dispatch & Authenticity Archive Key.
+- Companion Silhouettes recommendation grid.
+
+--------------------------------------------------------------------------------
+ROUTE: /collections (COLLECTIONS DIRECTORY)
+File: frontend/src/pages/CollectionsPage.tsx
+--------------------------------------------------------------------------------
+- Showcases the 4 brand collections as large, alternating horizontal visual tiles.
+- Displays collection code, season, piece count, high-res editorial imagery, and direct links to filtered shop views.
+
+--------------------------------------------------------------------------------
+ROUTE: /style-discovery (STYLE DISCOVERY ALGORITHM)
+File: frontend/src/pages/StyleDiscoveryPage.tsx
+--------------------------------------------------------------------------------
+- Interactive silhouette archetype calibration tool:
+  * [ARCH_01] MONOLITHIC ARMOR (Defensive, oversized outerwear, 620gsm wool)
+  * [ARCH_02] COLLAPSED TAILORING (Deconstructed suits, raw edges, dropped shoulders)
+  * [ARCH_03] KINETIC HARDWARE (Ballistic cordura, modular rigs, Fidlock magnets)
+  * [ARCH_04] HEAVY SUB-BASS (700gsm loopback terry, volume crop, zero drawstrings)
+- Selecting an archetype immediately updates the algorithm recommendations grid.
+
+--------------------------------------------------------------------------------
+ROUTE: /about (BRAND MANIFESTO & PROTOCOLS)
+File: frontend/src/pages/AboutPage.tsx
+--------------------------------------------------------------------------------
+- Full manifesto: "VOID IS NOT CLOTHING. IT IS ARMOR FOR THE IDENTITY."
+- Core pillars: Proportional Architecture, Zero Restocks Protocol, Raw Technical Materials, Transparent Cadence.
+- Atelier origin narrative and editorial split section.
+
+--------------------------------------------------------------------------------
+ROUTE: * (NOT FOUND)
+File: frontend/src/pages/NotFoundPage.tsx
+--------------------------------------------------------------------------------
+- Minimal brutalist 404 display with return vector to homepage.
+
+================================================================================
+4. THE COMPLETE CATALOG & SIGNATURE PIECES
+================================================================================
+Managed in frontend/src/services/productService.ts and types/product.ts:
+
+1. STRUCTURED COLLAPSE COAT (SKU: VD-01-W01-001)
+   - Category: Outerwear | Collection: CITY ARMOR | Wave: W01 | Price: $495 USD
+   - Materials: 78% Virgin Wool, 18% Polyamide, 4% Cashmere (620gsm bonded)
+   - Features: Asymmetric lapel, storm throat-latch, laser-engraved titanium buttons.
+
+2. BALLISTIC MONOLITH PARKA (SKU: VD-01-W01-002)
+   - Category: Outerwear | Collection: CITY ARMOR | Wave: W01 | Price: $540 USD
+   - Materials: 100% Technical Polyamide with DWR finish (3-layer Cordura 500D)
+   - Features: Wire-reinforced hood, taped seams, internal carry sling system.
+
+3. DECONSTRUCTED TAILORED BLAZER (SKU: VD-01-W02-003)
+   - Category: Tailoring | Collection: COLLAPSED TAILORING | Wave: W02 | Price: $380 USD
+   - Materials: 65% Wool, 35% Linen (450gsm tropical weave)
+   - Features: Sculptural padded shoulders, raw-edge hem, internal harness strap.
+
+4. HEAVY GAUGE SUB-BASS HOODIE (SKU: VD-01-W02-004)
+   - Category: Knitwear | Collection: HEAVY FLEECE | Wave: W02 | Price: $240 USD
+   - Materials: 100% Organic Heavyweight Cotton (700gsm custom loopback terry)
+   - Features: Crossover hood, no drawstrings, invisible kangaroo pocket zips.
+
+5. PLEATED WIDE ARCHIVE TROUSER (SKU: VD-01-W03-005)
+   - Category: Bottoms | Collection: COLLAPSED TAILORING | Wave: W03 | Price: $290 USD
+   - Materials: 70% Wool, 30% Technical Viscose
+   - Features: Double inverted knife pleats, adjustable gunmetal waist cinches.
+
+6. TACTICAL CHEST HARNESS BAG (SKU: VD-01-W03-006)
+   - Category: Accessories | Collection: TECHNICAL ACCESSORIES | Wave: W03 | Price: $185 USD
+   - Materials: 1050D Ballistic Cordura, Mil-spec nylon webbing
+   - Features: German Fidlock magnetic V-buckles, YKK Aquaguard waterproof zips.
+
+7. RAW EDGE OVERSIZED KIMONO COAT (SKU: VD-01-W04-007)
+   - Category: Outerwear | Collection: CITY ARMOR | Wave: W04 | Price: $460 USD
+   - Materials: 100% Boiled Virgin Wool (550gsm)
+   - Features: Obi tie belt, fringed needle-punched edges, deep walking slits.
+
+8. ASYMMETRIC HEAVY HOODED CAPE (SKU: VD-01-W05-008)
+   - Category: Outerwear | Collection: CITY ARMOR | Wave: W05 | Price: $510 USD
+   - Materials: 70% Wool, 30% Technical Elastane (Bonded neoprene/wool)
+   - Features: Diagonal asymmetric zip, integrated removable balaclava scarf.
+
+COLLECTIONS CATALOG:
+1. CITY ARMOR (Code: COL_01 // Horizon 2026 // 8 Pieces)
+2. COLLAPSED TAILORING (Code: COL_02 // Core Repeat // 6 Pieces)
+3. HEAVY FLEECE & KNITS (Code: COL_03 // Perpetual Archive // 5 Pieces)
+4. TECHNICAL ACCESSORIES (Code: COL_04 // Hardware Protocol // 7 Pieces)
+
+================================================================================
+5. COMPONENT SYSTEM INVENTORY (21 REUSABLE COMPONENTS)
+================================================================================
+
+A. LANDING COMPONENTS (frontend/src/components/landing/)
+1. LandingHero.tsx: Master editorial hero with integrated top nav and campaign visual.
+2. EditorialGrid.tsx: Asymmetric masonry lookbook with editorial category tiles.
+3. StatementBanner.tsx: Full-bleed dark campaign section with typography dominance.
+4. DropAnnouncement.tsx: Collection preview with honest technical specifications.
+5. LookbookStrip.tsx: 5-column product and outfit preview strip.
+6. LandingFooter.tsx: Minimal black footer with brand tagline and directories.
+
+B. LAYOUT & NAVIGATION COMPONENTS (frontend/src/components/layout/)
+7. Layout.tsx: Global shell rendering header, footer, toast container, and drawers.
+8. SiteHeader.tsx: Sticky header with search dialog, account, saved items, and bag count.
+9. MobileNavigation.tsx: Slide-in mobile menu with search trigger and index numbering.
+10. AnnouncementBar.tsx: Top notification bar with beacon status and dismiss action.
+11. SiteFooter.tsx: 4-column directory footer with live UTC signal time display.
+12. CartDrawer.tsx: Slide-out bag drawer with quantity counters, subtotal, and checkout CTA.
+13. WishlistDrawer.tsx: Slide-out watchlist drawer with direct bag transfers.
+
+C. PRODUCT COMPONENTS (frontend/src/components/product/)
+14. ProductCard.tsx: High-fashion card with photo hover, quick-size select, and wishlist.
+15. ProductGrid.tsx: Responsive grid (1 to 4 cols) with skeleton loading and empty states.
+
+D. COMMON PRIMITIVES (frontend/src/components/common/)
+16. Button.tsx: Universal button supporting pill, solid, outline, and ghost variants.
+17. PriceDisplay.tsx: Standardized currency formatting with original strike prices.
+18. ProductBadge.tsx: Brutalist technical tags ([ DROP 01 ], [ ARCHIVE ], [ LIMITED ]).
+19. Breadcrumbs.tsx: Monospaced navigational hierarchy.
+20. SearchInput.tsx: Clean line search field with keyboard shortcut and clear action.
+21. FilterDrawer.tsx: Slide-out filter panel for category, price range, and sort order.
+22. SizeSelector.tsx: Unisex numbered sizing selector.
+23. ColorSelector.tsx: Swatch selector for tonal colorways.
+24. QuantitySelector.tsx: Stepper control [-] [01] [+].
+25. LoadingSkeleton.tsx: Skeleton loaders for cards and text lines.
+26. EmptyState.tsx: Structured feedback for empty search/filter queries.
+27. ErrorState.tsx: Transmission interruption feedback with retry action.
+28. Modal.tsx: Accessible dialog with focus trap, backdrop blur, and escape key listener.
+29. Toast.tsx: Toast feedback notifications container.
+
+================================================================================
+6. STATE MANAGEMENT & CLIENT ARCHITECTURE
+================================================================================
+State is managed via modular React Contexts with automatic localStorage persistence:
+
+- CartContext (frontend/src/context/CartContext.tsx):
+  * State: items (CartItem[]), isOpen (boolean), totalCount (number), subtotal (number).
+  * Methods: addToCart(product, size, color, qty), removeFromCart(id), updateQuantity(id, qty), clearCart(), openCart(), closeCart().
+  * Persisted key: 'void_cart_state_v1'
+
+- WishlistContext (frontend/src/context/WishlistContext.tsx):
+  * State: items (WishlistItem[]), isOpen (boolean), totalCount (number).
+  * Methods: toggleWishlist(product), isInWishlist(id), openWishlist(), closeWishlist().
+  * Persisted key: 'void_wishlist_state_v1'
+
+- ToastContext (frontend/src/context/ToastContext.tsx):
+  * State: toasts (ToastMessage[]).
+  * Methods: addToast(message, type, title, duration), removeToast(id).
+  * Types: 'success', 'error', 'info'.
+
+================================================================================
+7. API SERVICE LAYER & DATA CONTRACTS
+================================================================================
+Located in:
+- frontend/src/services/api.ts (Generic typed fetch client + ApiError handling)
+- frontend/src/services/productService.ts (Async service interface)
+
+Methods Available:
+- productService.getProducts(params?: ProductFilterParams): Promise<Product[]>
+- productService.getNewArrivals(): Promise<Product[]>
+- productService.getFeaturedProducts(): Promise<Product[]>
+- productService.getProductBySlug(slug: string): Promise<Product | null>
+- productService.getCollections(): Promise<Collection[]>
+- productService.subscribeNewsletter(email: string): Promise<{ success: boolean; message: string }>
+
+Filtering Parameters Supported:
+- category: 'outerwear' | 'tailoring' | 'knitwear' | 'tops' | 'bottoms' | 'accessories'
+- collection: string
+- drop: string
+- search: string
+- minPrice: number
+- maxPrice: number
+- sort: 'newest' | 'price-asc' | 'price-desc' | 'featured'
+
+================================================================================
+8. BACKEND INTEGRATION SPECIFICATIONS & FUTURE ROADMAP
+================================================================================
+The project root contains backend/ prepared for Node.js + Express + MongoDB.
+
+RECOMMENDED MONGOOSE SCHEMAS:
+1. Product: name, subtitle, sku, slug, category, collection, drop, wave, price,
+   originalPrice, description, details, materials, fit, sizes, colors, images,
+   badge, inStock, stockCount, isFeatured, isNewDrop, releaseStatus.
+2. Collection: title, code, description, season, itemCount, heroImage, thumbnail, slug.
+3. Order: customerEmail, shippingAddress, items (productId, size, color, quantity, price),
+   subtotal, tax, shipping, total, paymentStatus, stripeSessionId, fulfillmentStatus.
+4. Subscriber: email, subscribedAt, isActive.
+
+REST API ENDPOINTS TO IMPLEMENT IN BACKEND:
+- GET  /api/products           -> List products with filters, sorting, and pagination
+- GET  /api/products/:slug     -> Retrieve specific product by unique slug
+- GET  /api/collections        -> Retrieve all active collections
+- POST /api/newsletter/subscribe -> Record subscriber email
+- POST /api/checkout/create-session -> Initialize Stripe checkout session
+- POST /api/webhooks/stripe    -> Process payment success, verify inventory, emit receipt
+
+CONNECTING FRONTEND TO BACKEND:
+Create .env in frontend/:
+  VITE_API_URL=http://localhost:5000/api
+Update productService.ts to route requests through apiClient directly to the API endpoints.
+
+================================================================================
+9. BUILD & PRODUCTION STATUS
+================================================================================
+- Production build command: tsc -b && vite build
+- Modules transformed: 1,968
+- TypeScript errors: 0
+- Linter / Bundler warnings: 0
+- Output directory: frontend/dist/
+- Build verification: PASSED (Compiled in 2.01s)
+- Accessibility: Focus rings, semantic tags, keyboard escape handlers, prefers-reduced-motion.
+
+================================================================================
+END OF SUMMARY DOCUMENT
+================================================================================
