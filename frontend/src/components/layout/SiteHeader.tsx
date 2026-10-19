@@ -19,10 +19,18 @@ export const SiteHeader: React.FC = () => {
   const { totalCount: wishlistCount, openWishlist } = useWishlist();
 
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const scrolled = window.scrollY > 20;
+          setIsScrolled((prev) => (prev !== scrolled ? scrolled : prev));
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -34,7 +42,7 @@ export const SiteHeader: React.FC = () => {
   const navLinks = [
     { label: 'SHOP', href: '/shop' },
     { label: 'COLLECTIONS', href: '/collections' },
-    { label: 'STYLE DISCOVERY', href: '/style-discovery' },
+    { label: 'JOURNAL', href: '/journal' },
     { label: 'ABOUT', href: '/about' },
   ];
 
@@ -54,7 +62,7 @@ export const SiteHeader: React.FC = () => {
             : 'bg-[#F4F2ED] border-transparent py-4'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+        <div className="max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 2xl:px-24 flex items-center justify-between">
           {/* Left: Brand Wordmark */}
           <div className="flex items-center gap-6">
             <Link

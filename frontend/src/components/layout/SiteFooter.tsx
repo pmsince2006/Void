@@ -29,7 +29,7 @@ export const SiteFooter: React.FC = () => {
 
   return (
     <footer className="bg-[#111111] text-[#F4F2ED] border-t border-[#282828] pt-16 pb-12 select-none">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 2xl:px-24">
         {/* Top Massive Brand Statement */}
         <div className="border-b border-[#282828] pb-12 mb-12 flex flex-col lg:flex-row justify-between items-start lg:items-end gap-8">
           <div>
@@ -138,17 +138,17 @@ export const SiteFooter: React.FC = () => {
           {/* Col 3 */}
           <div className="space-y-4">
             <h4 className="font-mono text-xs uppercase tracking-widest text-[#777777]">
-              [ 03 // DISCOVERY ]
+              [ 03 // EDITORIAL & ATELIER ]
             </h4>
             <ul className="space-y-2.5 text-xs font-mono">
               <li>
-                <Link to="/style-discovery" className="hover:text-white transition-colors">
-                  Silhouette Algorithm
+                <Link to="/journal" className="hover:text-white transition-colors">
+                  VOID Journal
                 </Link>
               </li>
               <li>
-                <Link to="/style-discovery" className="hover:text-white transition-colors">
-                  Proportion & Fit Matrix
+                <Link to="/journal" className="hover:text-white transition-colors">
+                  Atelier Dispatches
                 </Link>
               </li>
               <li>

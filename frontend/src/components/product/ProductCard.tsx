@@ -28,7 +28,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   const isWishlisted = isInWishlist(product.id);
 
   const primaryImage = product.images[0] || '';
-  const secondaryImage = product.images[1] || primaryImage;
 
   const handleQuickAdd = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -59,10 +58,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         <Link to={`/product/${product.slug}`} className="block w-full h-full">
           {!imgError ? (
             <img
-              src={isHovered && secondaryImage ? secondaryImage : primaryImage}
+              src={primaryImage}
               alt={product.name}
               onError={() => setImgError(true)}
-              className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105 filter grayscale contrast-125"
+              className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
               loading="lazy"
             />
           ) : (

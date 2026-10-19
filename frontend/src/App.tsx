@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { ToastProvider } from './context/ToastContext';
 import { CartProvider } from './context/CartContext';
 import { WishlistProvider } from './context/WishlistContext';
@@ -8,7 +8,7 @@ import { LandingPage } from './pages/LandingPage';
 import { ShopPage } from './pages/ShopPage';
 import { ProductDetailPage } from './pages/ProductDetailPage';
 import { CollectionsPage } from './pages/CollectionsPage';
-import { StyleDiscoveryPage } from './pages/StyleDiscoveryPage';
+import { JournalPage } from './pages/JournalPage';
 import { AboutPage } from './pages/AboutPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 
@@ -37,7 +37,8 @@ export function App() {
                 <Route path="shop" element={<ShopPage />} />
                 <Route path="product/:slug" element={<ProductDetailPage />} />
                 <Route path="collections" element={<CollectionsPage />} />
-                <Route path="style-discovery" element={<StyleDiscoveryPage />} />
+                <Route path="journal" element={<JournalPage />} />
+                <Route path="style-discovery" element={<Navigate to="/journal" replace />} />
                 <Route path="about" element={<AboutPage />} />
                 <Route path="*" element={<NotFoundPage />} />
               </Route>

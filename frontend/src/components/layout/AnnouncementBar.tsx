@@ -22,9 +22,9 @@ export const AnnouncementBar: React.FC<AnnouncementBarProps> = ({
   return (
     <aside
       aria-label="Announcement"
-      className="bg-[#111111] text-[#F4F2ED] py-2 px-4 border-b border-[#282828] text-xs font-mono select-none"
+      className="bg-[#111111] text-[#F4F2ED] py-2 border-b border-[#282828] text-xs font-mono select-none"
     >
-      <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+      <div className="max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 2xl:px-24 flex items-center justify-between gap-4">
         <div className="flex-1 flex items-center justify-center text-center gap-2 overflow-hidden">
           <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
           <span className="tracking-widest uppercase truncate text-[11px] sm:text-xs text-[#F4F2ED]/90">

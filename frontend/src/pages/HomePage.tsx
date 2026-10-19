@@ -528,11 +528,11 @@ export const HomePage: React.FC = () => {
             <Button
               variant="solid"
               size="lg"
-              to="/style-discovery"
+              to="/journal"
               className="w-full lg:w-auto"
               rightIcon={<ArrowRight className="w-4 h-4" />}
             >
-              LAUNCH STYLE DISCOVERY
+              EXPLORE VOID JOURNAL
             </Button>
           </div>
         </div>

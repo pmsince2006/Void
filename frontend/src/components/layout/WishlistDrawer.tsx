@@ -70,7 +70,7 @@ export const WishlistDrawer: React.FC = () => {
                     <img
                       src={product.images[0]}
                       alt={product.name}
-                      className="w-full h-full object-cover filter grayscale contrast-125"
+                      className="w-full h-full object-cover"
                     />
                   </Link>
 

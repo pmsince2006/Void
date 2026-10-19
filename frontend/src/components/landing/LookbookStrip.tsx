@@ -64,67 +64,69 @@ export const LookbookStrip: React.FC = () => {
   return (
     <section
       id="lookbook-strip"
-      className="w-full relative bg-[#F0F0ED] text-[#0B0B0B] border border-[#202020]/25 overflow-hidden shadow-2xl fine-grain-overlay p-6 sm:p-10 lg:p-12"
+      className="w-full relative bg-[#F0F0ED] text-[#0B0B0B] border-b border-[#0B0B0B]/10 py-16 sm:py-24 lg:py-28 fine-grain-overlay"
     >
-      {/* Header */}
-      <div className="border-b border-[#0B0B0B]/15 pb-6 mb-8 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-        <div>
-          <span className="font-mono text-[10px] tracking-widest text-[#777777] uppercase block mb-1">
-            [ SECTION 05 // SILHOUETTE STRIP ]
-          </span>
-          <h2 className="font-display text-2xl sm:text-4xl font-extrabold uppercase tracking-tight text-[#0B0B0B]">
-            PRODUCT & OUTFIT LOOKBOOK
-          </h2>
+      <div className="max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 2xl:px-24">
+        {/* Header */}
+        <div className="border-b border-[#0B0B0B]/10 pb-6 mb-10 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <div>
+            <span className="font-mono text-[10px] tracking-widest text-[#777777] uppercase block mb-1">
+              [ SECTION 05 // LOOKBOOK STRIP ]
+            </span>
+            <h2 className="font-display text-2xl sm:text-4xl font-extrabold uppercase tracking-tight text-[#0B0B0B]">
+              LOOKBOOK SELECTION
+            </h2>
+          </div>
+
+          <Link
+            to="/shop"
+            className="text-xs font-mono uppercase tracking-wider text-[#0B0B0B] hover:text-[#777777] flex items-center gap-1.5 transition-colors font-semibold"
+          >
+            <span>VIEW ALL PRODUCTS</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
         </div>
 
-        <Link
-          to="/shop"
-          className="text-xs font-mono uppercase tracking-wider text-[#0B0B0B] hover:text-[#777777] flex items-center gap-1 transition-colors"
-        >
-          <span>VIEW FULL ARCHIVE CATALOG</span>
-          <ArrowRight className="w-3.5 h-3.5" />
-        </Link>
-      </div>
+        {/* Horizontal Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5 sm:gap-6">
+          {LOOKBOOK_ITEMS.map((item) => (
+            <Link
+              key={item.id}
+              to={`/product/${item.slug}`}
+              className="group flex flex-col bg-transparent"
+            >
+              {/* Image Stage */}
+              <div className="w-full aspect-[3/4.2] bg-[#D1D3D2] border border-[#0B0B0B]/15 group-hover:border-[#0B0B0B] overflow-hidden relative mb-3 transition-colors shadow-sm">
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  loading="lazy"
+                />
 
-      {/* Horizontal Strip / Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6">
-        {LOOKBOOK_ITEMS.map((item) => (
-          <Link
-            key={item.id}
-            to={`/product/${item.slug}`}
-            className="group flex flex-col bg-transparent"
-          >
-            {/* Image Canvas */}
-            <div className="w-full aspect-[3/4.2] bg-[#D1D3D2] border border-[#0B0B0B]/20 group-hover:border-[#0B0B0B] overflow-hidden relative mb-2.5 transition-colors">
-              <img
-                src={item.image}
-                alt={item.title}
-                className="w-full h-full object-cover filter grayscale contrast-125 transition-transform duration-700 ease-out group-hover:scale-105"
-                loading="lazy"
-              />
+                {/* Code Badge */}
+                <div className="absolute top-2.5 left-2.5 bg-[#0B0B0B]/90 text-[#F0F0ED] px-2 py-0.5 text-[9px] font-mono uppercase tracking-wider">
+                  {item.code}
+                </div>
 
-              {/* Top micro code */}
-              <div className="absolute top-2 left-2 bg-[#0B0B0B]/85 text-[#F0F0ED] px-1.5 py-0.5 text-[9px] font-mono uppercase">
-                {item.code}
+                {/* Category Tag */}
+                <div className="absolute bottom-2.5 right-2.5 bg-[#F0F0ED]/90 text-[#0B0B0B] px-2 py-0.5 text-[8px] font-mono uppercase font-bold tracking-wider">
+                  {item.category}
+                </div>
               </div>
 
-              {/* Category tag */}
-              <div className="absolute bottom-2 right-2 bg-[#F0F0ED]/90 text-[#0B0B0B] px-1.5 py-0.5 text-[8px] font-mono uppercase font-bold tracking-wider">
-                {item.category}
+              {/* Meta */}
+              <div className="space-y-1">
+                <h3 className="font-heading font-bold text-xs uppercase tracking-wider text-[#0B0B0B] group-hover:text-[#777777] transition-colors line-clamp-1">
+                  {item.title}
+                </h3>
+                <p className="font-mono text-xs text-[#777777]">
+                  ${item.price} USD
+                </p>
               </div>
-            </div>
-
-            {/* Meta */}
-            <div className="space-y-0.5">
-              <h3 className="font-heading font-bold text-xs uppercase tracking-wider text-[#0B0B0B] group-hover:text-[#777777] transition-colors line-clamp-1">
-                {item.title}
-              </h3>
-              <p className="font-mono text-xs text-[#777777]">
-                ${item.price} USD
-              </p>
-            </div>
-          </Link>
-        ))}
+            </Link>
+          ))}
+        </div>
       </div>
     </section>
   );

@@ -1,107 +1,117 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Breadcrumbs } from '../components/common/Breadcrumbs';
-import { Button } from '../components/common/Button';
-import { ShieldCheck, Eye, RefreshCw, Zap } from 'lucide-react';
+import { ShieldCheck, Eye, RefreshCw, Zap, ArrowRight } from 'lucide-react';
 
 export const AboutPage: React.FC = () => {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
-      <Breadcrumbs items={[{ label: 'ABOUT' }]} className="mb-6" />
+    <div className="w-full max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 2xl:px-24 py-10 sm:py-16">
+      <Breadcrumbs items={[{ label: 'ABOUT' }]} className="mb-8" />
 
       {/* Hero Manifesto */}
-      <div className="border-b border-[#111111] pb-12 mb-16">
+      <div className="border-b border-[#111111]/15 pb-12 sm:pb-16 mb-16 sm:mb-20">
         <span className="text-[11px] font-mono tracking-widest text-[#777777] uppercase block mb-3">
-          MANIFESTO & PROTOCOL // SYSTEM 01
+          [ BRAND MANIFESTO // CONTEMPORARY STREETWEAR ]
         </span>
-        <h1 className="font-display text-4xl sm:text-6xl md:text-7xl font-extrabold uppercase tracking-tight text-[#111111] leading-none mb-8">
-          VOID IS NOT CLOTHING.<br />
-          IT IS ARMOR FOR THE IDENTITY.
+        <h1 className="font-display text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold uppercase tracking-tight text-[#111111] leading-none mb-8">
+          WEAR YOUR <br />
+          OWN IDENTITY.
         </h1>
-        <p className="font-mono text-sm sm:text-base text-[#111111] max-w-3xl leading-relaxed">
-          VOID exists to strip away superfluous branding, trend cycles, and fast-fashion consumerism. We engineer sculptural, brutalist unisex garments designed to outlast commercial seasons.
+        <p className="font-mono text-sm sm:text-base text-[#777777] max-w-2xl leading-relaxed">
+          Contemporary streetwear. Made to stand apart. We engineer sculptural, minimalist garments designed for modern form and daily wear.
         </p>
       </div>
 
       {/* Core Principles Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-        <div className="border border-[#111111] p-6 bg-[#F4F2ED]">
-          <div className="w-10 h-10 border border-[#111111] flex items-center justify-center mb-4">
-            <Eye className="w-5 h-5 text-[#111111]" />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 mb-16 sm:mb-24">
+        <div className="border border-[#111111]/20 p-8 bg-[#F4F2ED] hover:border-[#111111] transition-colors">
+          <div className="w-10 h-10 border border-[#111111] flex items-center justify-center mb-6">
+            <Eye className="w-4 h-4 text-[#111111]" />
           </div>
-          <h3 className="font-heading font-bold text-sm uppercase tracking-wider mb-2">
-            PROPORTIONAL ARCHITECTURE
+          <h3 className="font-display font-bold text-sm uppercase tracking-wider mb-3 text-[#111111]">
+            PROPORTIONAL FORM
           </h3>
           <p className="text-xs font-mono text-[#777777] leading-relaxed">
-            Every pattern is developed with zero gender presuppositions. Volume, drop, and fabric weight command the silhouette.
+            Clean lines and deliberate proportions. Developed with volume and structure for daily wear.
           </p>
         </div>
 
-        <div className="border border-[#111111] p-6 bg-[#F4F2ED]">
-          <div className="w-10 h-10 border border-[#111111] flex items-center justify-center mb-4">
-            <ShieldCheck className="w-5 h-5 text-[#111111]" />
+        <div className="border border-[#111111]/20 p-8 bg-[#F4F2ED] hover:border-[#111111] transition-colors">
+          <div className="w-10 h-10 border border-[#111111] flex items-center justify-center mb-6">
+            <ShieldCheck className="w-4 h-4 text-[#111111]" />
           </div>
-          <h3 className="font-heading font-bold text-sm uppercase tracking-wider mb-2">
-            ZERO RESTOCKS PROTOCOL
+          <h3 className="font-display font-bold text-sm uppercase tracking-wider mb-3 text-[#111111]">
+            ARCHIVE RELEASES
           </h3>
           <p className="text-xs font-mono text-[#777777] leading-relaxed">
-            Once a wave sells out, the piece enters the permanent archive. No re-issues, no overproduction, no waste.
+            Strict batch runs. Each release is produced in limited allocations with no overproduction.
           </p>
         </div>
 
-        <div className="border border-[#111111] p-6 bg-[#F4F2ED]">
-          <div className="w-10 h-10 border border-[#111111] flex items-center justify-center mb-4">
-            <Zap className="w-5 h-5 text-[#111111]" />
+        <div className="border border-[#111111]/20 p-8 bg-[#F4F2ED] hover:border-[#111111] transition-colors">
+          <div className="w-10 h-10 border border-[#111111] flex items-center justify-center mb-6">
+            <Zap className="w-4 h-4 text-[#111111]" />
           </div>
-          <h3 className="font-heading font-bold text-sm uppercase tracking-wider mb-2">
-            RAW TECHNICAL MATERIALS
+          <h3 className="font-display font-bold text-sm uppercase tracking-wider mb-3 text-[#111111]">
+            HEAVYWEIGHT CRAFT
           </h3>
           <p className="text-xs font-mono text-[#777777] leading-relaxed">
-            620gsm virgin wools, 1050D Cordura, German Fidlock magnetic hardware, and custom heavy French terry.
+            Dense French terry, bonded wool blends, and durable technical textiles built for longevity.
           </p>
         </div>
 
-        <div className="border border-[#111111] p-6 bg-[#F4F2ED]">
-          <div className="w-10 h-10 border border-[#111111] flex items-center justify-center mb-4">
-            <RefreshCw className="w-5 h-5 text-[#111111]" />
+        <div className="border border-[#111111]/20 p-8 bg-[#F4F2ED] hover:border-[#111111] transition-colors">
+          <div className="w-10 h-10 border border-[#111111] flex items-center justify-center mb-6">
+            <RefreshCw className="w-4 h-4 text-[#111111]" />
           </div>
-          <h3 className="font-heading font-bold text-sm uppercase tracking-wider mb-2">
-            TRANSPARENT CADENCE
+          <h3 className="font-display font-bold text-sm uppercase tracking-wider mb-3 text-[#111111]">
+            MINIMAL FORM
           </h3>
           <p className="text-xs font-mono text-[#777777] leading-relaxed">
-            Five sequential waves released one week apart. Live availability counters update continuously until allocation is met.
+            No superfluous branding. The silhouette and texture command attention on their own.
           </p>
         </div>
       </div>
 
       {/* Editorial Image & Text Split */}
-      <div className="border border-[#111111] grid grid-cols-1 lg:grid-cols-2 mb-16">
-        <div className="p-8 sm:p-14 flex flex-col justify-between">
+      <div className="border border-[#111111]/20 grid grid-cols-1 lg:grid-cols-12 group hover:border-[#111111] transition-colors overflow-hidden">
+        <div className="lg:col-span-5 p-8 sm:p-14 lg:p-16 flex flex-col justify-between bg-[#F4F2ED]">
           <div>
             <span className="text-[10px] font-mono tracking-widest text-[#777777] uppercase block mb-3">
-              THE ATELIER // ORIGIN SIGNAL
+              [ ATELIER PERSPECTIVE ]
             </span>
-            <h2 className="font-display text-3xl sm:text-4xl font-extrabold uppercase tracking-tight text-[#111111] mb-6">
+            <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold uppercase tracking-tight text-[#111111] mb-6 leading-none">
               BORN IN URBAN SHADOWS.
             </h2>
-            <p className="font-mono text-xs text-[#111111]/80 leading-relaxed mb-4">
-              We reject the clean, sterile homogeneity of corporate fashion. VOID draws from brutalist architecture, underground music scenes, industrial hardware, and the quiet power of monospaced utility.
+            <p className="font-mono text-xs sm:text-sm text-[#777777] leading-relaxed mb-4">
+              We design clothing that acts as a canvas for the individual. Clean lines, tactile textures, and utilitarian details made for modern movement.
             </p>
-            <p className="font-mono text-xs text-[#111111]/80 leading-relaxed mb-6">
-              When you wear VOID, you do not advertise our label. You wear armor engineered to amplify your own identity.
+            <p className="font-mono text-xs sm:text-sm text-[#777777] leading-relaxed mb-8">
+              Contemporary streetwear. Made to stand apart.
             </p>
           </div>
 
-          <Button variant="solid" to="/shop" size="md">
-            EXPLORE THE ARCHIVE
-          </Button>
+          <div>
+            <Link
+              to="/shop"
+              className="editorial-pill text-xs inline-flex items-center gap-2 group/btn"
+            >
+              <span>EXPLORE ARCHIVE</span>
+              <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover/btn:translate-x-1" />
+            </Link>
+          </div>
         </div>
 
-        <div className="aspect-[4/3] lg:aspect-auto bg-[#D6D1C8] border-t lg:border-t-0 lg:border-l border-[#111111] overflow-hidden">
+        <div className="lg:col-span-7 min-h-[380px] sm:min-h-[460px] lg:min-h-[540px] bg-[#E5E0D8] border-t lg:border-t-0 lg:border-l border-[#111111]/20 overflow-hidden relative">
           <img
-            src="https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1200&q=80"
+            src="https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1400&q=85"
             alt="VOID Atelier silhouette study"
-            className="w-full h-full object-cover filter grayscale contrast-125"
+            className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+            loading="lazy"
           />
+          <div className="absolute top-4 left-4 bg-[#111111] text-[#F4F2ED] text-[10px] font-mono px-3 py-1.5 uppercase tracking-widest">
+            VOID // ARCHIVE SILHOUETTE
+          </div>
         </div>
       </div>
     </div>
