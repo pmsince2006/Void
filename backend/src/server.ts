@@ -9,6 +9,7 @@ import productRoutes from './routes/productRoutes';
 import collectionRoutes from './routes/collectionRoutes';
 import cartRoutes from './routes/cartRoutes';
 import wishlistRoutes from './routes/wishlistRoutes';
+import orderRoutes from './routes/orderRoutes';
 
 // Load environment configuration from .env if present
 dotenv.config();
@@ -72,6 +73,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/collections', collectionRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/wishlist', wishlistRoutes);
+app.use('/api/orders', orderRoutes);
 
 // 7. Catch-all 404 Handler for Unknown Routes
 app.use((req: Request, res: Response) => {
