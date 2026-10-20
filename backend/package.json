@@ -7,11 +7,12 @@
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "test": "tsx src/tests/auth.test.ts && tsx src/tests/products.test.ts && tsx src/tests/cartWishlist.test.ts && tsx src/tests/orders.test.ts",
+    "test": "tsx src/tests/auth.test.ts && tsx src/tests/products.test.ts && tsx src/tests/cartWishlist.test.ts && tsx src/tests/orders.test.ts && tsx src/tests/productionConfig.test.ts",
     "test:auth": "tsx src/tests/auth.test.ts",
     "test:products": "tsx src/tests/products.test.ts",
     "test:cart": "tsx src/tests/cartWishlist.test.ts",
     "test:orders": "tsx src/tests/orders.test.ts",
+    "test:config": "tsx src/tests/productionConfig.test.ts",
     "seed": "tsx src/scripts/seedProducts.ts"
   },
   "keywords": [

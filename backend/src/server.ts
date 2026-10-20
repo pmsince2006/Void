@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import { connectDatabase, isDatabaseConnected } from './config/database';
+import { parseAllowedOrigins, isOriginAllowed } from './utils/origin';
 import authRoutes from './routes/authRoutes';
 import productRoutes from './routes/productRoutes';
 import collectionRoutes from './routes/collectionRoutes';
@@ -16,17 +17,36 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
 
-// 1. Security Headers (HSTS, NoSniff, XSS protection, Frameguard)
+// 1. Configure reverse proxy trust safely for the documented production topology.
+// Behind a single reverse proxy (e.g. Render, Railway, AWS ALB, Nginx),
+// we trust 1 hop to determine client IP for rate limiting and TLS status for secure cookies.
+// Avoids broad proxy trust ('true') which would allow spoofing of client IP via forged headers.
+const trustProxyConfig = process.env.TRUST_PROXY;
+if (trustProxyConfig !== undefined) {
+  if (trustProxyConfig === 'true') {
+    app.set('trust proxy', true);
+  } else if (trustProxyConfig === 'false') {
+    app.set('trust proxy', false);
+  } else if (!isNaN(Number(trustProxyConfig))) {
+    app.set('trust proxy', Number(trustProxyConfig));
+  } else {
+    app.set('trust proxy', trustProxyConfig);
+  }
+} else if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1);
+}
+
+// 2. Security Headers (HSTS, NoSniff, XSS protection, Frameguard)
 app.use(helmet());
 
-// 2. Strict CORS Configuration: Only allow configured frontend origin with credentials
+// 3. Strict CORS Configuration: Only allow configured frontend origins with credentials
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow requests with no origin (e.g. server-to-server, curl) or matching frontend
-      if (!origin || origin === FRONTEND_URL) {
+      const allowedOrigins = parseAllowedOrigins(process.env.FRONTEND_URL);
+      // Allow requests with no origin (e.g. server-to-server, curl) or matching allowed origins
+      if (!origin || isOriginAllowed(origin, allowedOrigins)) {
         callback(null, true);
       } else {
         callback(new Error('Blocked by CORS policy: Origin not allowed'));
@@ -36,26 +56,29 @@ app.use(
   })
 );
 
-// 3. Request Body and Cookie Parsers
+// 4. Request Body and Cookie Parsers
 app.use(express.json({ limit: '10kb' })); // Guard against large payload DoS attacks
 app.use(cookieParser());
 
-// 4. Defense-in-depth CSRF / Origin verification for state-changing requests
+// 5. Defense-in-depth CSRF / Origin verification for state-changing requests
 app.use((req: Request, res: Response, next: NextFunction) => {
   const isStateChanging = ['POST', 'PUT', 'PATCH', 'DELETE'].includes(req.method);
   const origin = req.headers.origin;
 
-  if (isStateChanging && origin && origin !== FRONTEND_URL) {
-    res.status(403).json({
-      status: 'error',
-      message: 'Cross-site request forgery protection: Origin not allowed'
-    });
-    return;
+  if (isStateChanging && origin) {
+    const allowedOrigins = parseAllowedOrigins(process.env.FRONTEND_URL);
+    if (!isOriginAllowed(origin, allowedOrigins)) {
+      res.status(403).json({
+        status: 'error',
+        message: 'Cross-site request forgery protection: Origin not allowed'
+      });
+      return;
+    }
   }
   next();
 });
 
-// 5. Health Check Endpoint (Includes safe database status)
+// 6. Health Check Endpoint (Includes safe database status)
 app.get('/api/health', (_req: Request, res: Response) => {
   const dbConnected = isDatabaseConnected();
 
@@ -67,7 +90,7 @@ app.get('/api/health', (_req: Request, res: Response) => {
   });
 });
 
-// 6. API Routes
+// 7. API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/collections', collectionRoutes);
@@ -75,7 +98,7 @@ app.use('/api/cart', cartRoutes);
 app.use('/api/wishlist', wishlistRoutes);
 app.use('/api/orders', orderRoutes);
 
-// 7. Catch-all 404 Handler for Unknown Routes
+// 8. Catch-all 404 Handler for Unknown Routes
 app.use((req: Request, res: Response) => {
   res.status(404).json({
     status: 'error',
@@ -83,7 +106,7 @@ app.use((req: Request, res: Response) => {
   });
 });
 
-// 8. Centralized Safe Error Handler
+// 9. Centralized Safe Error Handler
 app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
   if (err?.message && err.message.includes('Blocked by CORS')) {
     res.status(403).json({

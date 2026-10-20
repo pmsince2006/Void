@@ -8,6 +8,8 @@ export interface TokenPayload {
   email: string;
 }
 
+export type CookieSameSiteOption = 'lax' | 'strict' | 'none';
+
 /**
  * Retrieve the JWT signing secret from environment.
  * Enforces security in production.
@@ -54,32 +56,71 @@ export function verifyToken(token: string): TokenPayload | null {
 }
 
 /**
- * Returns hardened cookie configuration options.
- * HttpOnly protects against XSS token theft.
- * SameSite & Secure protect against CSRF and network eavesdropping.
+ * Resolves the configured SameSite cookie attribute.
+ * Defaults to 'lax' for robust CSRF protection, but allows 'strict' or 'none' if configured.
+ */
+export function resolveCookieSameSite(): CookieSameSiteOption {
+  const envVal = process.env.COOKIE_SAME_SITE?.toLowerCase().trim();
+  if (envVal === 'none' || envVal === 'strict' || envVal === 'lax') {
+    return envVal;
+  }
+  return 'lax';
+}
+
+/**
+ * Resolves whether the cookie must enforce the Secure flag (HTTPS).
+ * Browsers strictly require Secure=true if SameSite=None.
+ */
+export function resolveCookieSecure(isProduction: boolean, sameSite: CookieSameSiteOption): boolean {
+  if (process.env.COOKIE_SECURE !== undefined) {
+    return process.env.COOKIE_SECURE.toLowerCase().trim() === 'true';
+  }
+  // SameSite=None strictly requires Secure=true in all modern browsers
+  if (sameSite === 'none') {
+    return true;
+  }
+  return isProduction;
+}
+
+/**
+ * Base cookie options shared identically between setting and clearing cookies.
+ * Ensures consistent attributes (path, domain, sameSite, secure, httpOnly).
+ */
+export function getBaseCookieOptions(): CookieOptions {
+  const isProduction = process.env.NODE_ENV === 'production';
+  const sameSite = resolveCookieSameSite();
+  const secure = resolveCookieSecure(isProduction, sameSite);
+
+  const options: CookieOptions = {
+    httpOnly: true, // Inaccessible to browser JavaScript (anti-XSS)
+    secure,
+    sameSite,
+    path: '/'
+  };
+
+  const domain = process.env.COOKIE_DOMAIN?.trim();
+  if (domain) {
+    options.domain = domain;
+  }
+
+  return options;
+}
+
+/**
+ * Returns hardened cookie configuration options for issuing sessions.
  */
 export function getSessionCookieOptions(): CookieOptions {
-  const isProduction = process.env.NODE_ENV === 'production';
-
   return {
-    httpOnly: true, // Inaccessible to browser JavaScript (anti-XSS)
-    secure: isProduction, // HTTPS only in production (allows HTTP for local development)
-    sameSite: isProduction ? 'strict' : 'lax', // Protects against cross-site request forgery
-    path: '/',
+    ...getBaseCookieOptions(),
     maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days in milliseconds
   };
 }
 
 /**
- * Options for clearing session cookie (omits maxAge as per Express best practices).
+ * Options for clearing session cookie.
+ * Matches getSessionCookieOptions attributes (path, domain, secure, sameSite, httpOnly)
+ * while omitting maxAge to instruct browser deletion.
  */
 export function getClearCookieOptions(): CookieOptions {
-  const isProduction = process.env.NODE_ENV === 'production';
-
-  return {
-    httpOnly: true,
-    secure: isProduction,
-    sameSite: isProduction ? 'strict' : 'lax',
-    path: '/'
-  };
+  return getBaseCookieOptions();
 }
