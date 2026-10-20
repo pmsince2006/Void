@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import { connectDatabase, isDatabaseConnected } from './config/database';
 import { parseAllowedOrigins, isOriginAllowed } from './utils/origin';
+import { generalLimiter } from './middleware/rateLimiter';
 import authRoutes from './routes/authRoutes';
 import productRoutes from './routes/productRoutes';
 import collectionRoutes from './routes/collectionRoutes';
@@ -79,6 +80,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 // 6. Health Check Endpoint (Includes safe database status)
+// (Health check is mounted above generalLimiter so automated container/uptime probes are never throttled)
 app.get('/api/health', (_req: Request, res: Response) => {
   const dbConnected = isDatabaseConnected();
 
@@ -90,7 +92,10 @@ app.get('/api/health', (_req: Request, res: Response) => {
   });
 });
 
-// 7. API Routes
+// 7. General API Rate Limiting for standard endpoints
+app.use('/api', generalLimiter);
+
+// 8. API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/collections', collectionRoutes);

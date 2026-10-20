@@ -33,3 +33,20 @@ export const generalLimiter = rateLimit({
     });
   }
 });
+
+/**
+ * Strict rate limiter for order creation.
+ * Protects against automated inventory reservation exhaustion and checkout spam.
+ */
+export const orderLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: process.env.NODE_ENV === 'test' ? 1000 : 20,
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (_req: Request, res: Response) => {
+    res.status(429).json({
+      status: 'error',
+      message: 'Too many order attempts. Please try again after 15 minutes.'
+    });
+  }
+});

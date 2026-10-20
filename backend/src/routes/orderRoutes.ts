@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { requireAuth } from '../middleware/auth';
+import { orderLimiter } from '../middleware/rateLimiter';
 import {
   createOrder,
   getOrders,
@@ -15,7 +16,7 @@ router.use(requireAuth);
  * @route   POST /api/orders
  * @desc    Creates an authenticated order with live inventory reservation
  */
-router.post('/', createOrder);
+router.post('/', orderLimiter, createOrder);
 
 /**
  * @route   GET /api/orders

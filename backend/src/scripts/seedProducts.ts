@@ -369,7 +369,20 @@ export const SEED_COLLECTIONS = [
   }
 ];
 
-export async function seedCatalogue(uri?: string): Promise<{ products: number; collections: number }> {
+export interface SeedCatalogueOptions {
+  resetInventory?: boolean;
+  forceProduction?: boolean;
+}
+
+export async function seedCatalogue(
+  uri?: string,
+  options?: SeedCatalogueOptions
+): Promise<{ products: number; collections: number }> {
+  // Production safety guard: do not run against any production database unless forceProduction is explicitly specified
+  if (process.env.NODE_ENV === 'production' && !options?.forceProduction) {
+    throw new Error('SEED_BLOCKED_IN_PRODUCTION: Cannot seed production database without explicit forceProduction option.');
+  }
+
   if (mongoose.connection.readyState === 0) {
     const targetUri = uri || process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/void_db';
     console.log(`Connecting to MongoDB at: ${targetUri.replace(/\/\/.*@/, '//***@')}`);
@@ -379,11 +392,34 @@ export async function seedCatalogue(uri?: string): Promise<{ products: number; c
   // 1. Upsert products idempotently
   let productsUpserted = 0;
   for (const product of SEED_PRODUCTS) {
-    await Product.findOneAndUpdate(
-      { id: product.id },
-      { $set: product },
-      { upsert: true, returnDocument: 'after', setDefaultsOnInsert: true }
-    );
+    if (options?.resetInventory) {
+      // Force inventory reset mode (explicitly requested)
+      await Product.findOneAndUpdate(
+        { id: product.id },
+        { $set: product },
+        { upsert: true, returnDocument: 'after', setDefaultsOnInsert: true }
+      );
+    } else {
+      // Safe operational mode (default):
+      // - Catalogue fields (name, price, description, images, sizes, colors, etc.) are updated via $set.
+      // - Live operational inventory fields (stockCount, inStock) and immutable identity (id) are
+      //   only initialized on first insertion via $setOnInsert.
+      // - Existing live stockCount and inStock states are strictly preserved!
+      const { id, stockCount, inStock, ...catalogueUpdate } = product;
+
+      await Product.findOneAndUpdate(
+        { id: product.id },
+        {
+          $set: catalogueUpdate,
+          $setOnInsert: {
+            id: product.id,
+            stockCount: stockCount ?? 0,
+            inStock: inStock ?? ((stockCount ?? 0) > 0)
+          }
+        },
+        { upsert: true, returnDocument: 'after', setDefaultsOnInsert: true }
+      );
+    }
     productsUpserted++;
   }
 
@@ -410,7 +446,10 @@ export async function seedCatalogue(uri?: string): Promise<{ products: number; c
 
 // Execute directly if run via CLI
 if (require.main === module) {
-  seedCatalogue()
+  const resetInventory = process.argv.includes('--reset-inventory');
+  const forceProduction = process.argv.includes('--force-prod');
+
+  seedCatalogue(undefined, { resetInventory, forceProduction })
     .then(async () => {
       await mongoose.disconnect();
       process.exit(0);

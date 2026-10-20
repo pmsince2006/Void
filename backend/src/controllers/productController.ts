@@ -3,6 +3,16 @@ import { Product } from '../models/Product';
 import { CollectionModel } from '../models/Collection';
 
 /**
+ * Escapes regular expression special characters to treat input strictly as literal text.
+ * Escapes: . * + ? ^ $ { } ( ) | [ ] \
+ */
+export function escapeRegex(text: string): string {
+  return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+export const MAX_SEARCH_LENGTH = 100;
+
+/**
  * GET /api/products
  * Public read-only endpoint with filtering, search, and sorting.
  */
@@ -24,14 +34,26 @@ export async function getProducts(req: Request, res: Response): Promise<void> {
       query.category = canonical;
     }
 
-    // 2. Collection Filter (matches substring case-insensitively)
+    // 2. Collection Filter (matches substring case-insensitively with regex escaping)
     if (collection && typeof collection === 'string') {
-      query.collection = { $regex: collection.trim(), $options: 'i' };
+      const trimmed = collection.trim();
+      if (trimmed) {
+        query.collection = {
+          $regex: escapeRegex(trimmed.slice(0, MAX_SEARCH_LENGTH)),
+          $options: 'i'
+        };
+      }
     }
 
-    // 3. Drop Campaign Filter
+    // 3. Drop Campaign Filter (matches substring case-insensitively with regex escaping)
     if (drop && typeof drop === 'string') {
-      query.drop = { $regex: drop.trim(), $options: 'i' };
+      const trimmed = drop.trim();
+      if (trimmed) {
+        query.drop = {
+          $regex: escapeRegex(trimmed.slice(0, MAX_SEARCH_LENGTH)),
+          $options: 'i'
+        };
+      }
     }
 
     // 4. Price Bounds
@@ -47,14 +69,20 @@ export async function getProducts(req: Request, res: Response): Promise<void> {
     }
 
     // 5. Keyword Search across Name, SKU, Collection, Description
-    if (search && typeof search === 'string' && search.trim()) {
-      const searchRegex = { $regex: search.trim(), $options: 'i' };
-      query.$or = [
-        { name: searchRegex },
-        { sku: searchRegex },
-        { collection: searchRegex },
-        { description: searchRegex }
-      ];
+    // Escapes regex metacharacters to treat input strictly as literal search text.
+    // Limits length to MAX_SEARCH_LENGTH to guard against memory exhaustion and ReDoS.
+    if (search && typeof search === 'string') {
+      const trimmed = search.trim();
+      if (trimmed.length > 0) {
+        const sanitized = escapeRegex(trimmed.slice(0, MAX_SEARCH_LENGTH));
+        const searchRegex = { $regex: sanitized, $options: 'i' };
+        query.$or = [
+          { name: searchRegex },
+          { sku: searchRegex },
+          { collection: searchRegex },
+          { description: searchRegex }
+        ];
+      }
     }
 
     // 6. Sorting Options
