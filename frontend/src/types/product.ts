@@ -1,9 +1,7 @@
 export type ProductCategory = 
-  | 'outerwear' 
-  | 'tailoring' 
-  | 'knitwear' 
-  | 'tops' 
+  | 'uppers' 
   | 'bottoms' 
+  | 'shoes' 
   | 'accessories';
 
 export type ProductBadgeType = 

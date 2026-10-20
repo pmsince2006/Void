@@ -12,12 +12,10 @@ export interface FilterDrawerProps {
 }
 
 const CATEGORIES: { label: string; value: ProductCategory }[] = [
-  { label: 'ALL SILHOUETTES', value: 'outerwear' as any },
-  { label: 'OUTERWEAR // ARMOR', value: 'outerwear' },
-  { label: 'COLLAPSED TAILORING', value: 'tailoring' },
-  { label: 'HEAVY FLEECE & KNITS', value: 'knitwear' },
-  { label: 'ARCHIVE BOTTOMS', value: 'bottoms' },
-  { label: 'TACTICAL ACCESSORIES', value: 'accessories' }
+  { label: 'UPPERS', value: 'uppers' },
+  { label: 'BOTTOMS', value: 'bottoms' },
+  { label: 'SHOES', value: 'shoes' },
+  { label: 'ACCESSORIES', value: 'accessories' }
 ];
 
 const SORT_OPTIONS: { label: string; value: ProductFilterParams['sort'] }[] = [
@@ -146,7 +144,7 @@ export const FilterDrawer: React.FC<FilterDrawerProps> = ({
             </h3>
             <div className="flex items-center gap-3">
               <div className="flex-1">
-                <span className="text-[10px] font-mono text-[#777777] block mb-1">MIN ($)</span>
+                <span className="text-[10px] font-mono text-[#777777] block mb-1">MIN (₹)</span>
                 <input
                   type="number"
                   placeholder="0"
@@ -162,10 +160,10 @@ export const FilterDrawer: React.FC<FilterDrawerProps> = ({
               </div>
               <span className="font-mono text-[#777777] pt-4">—</span>
               <div className="flex-1">
-                <span className="text-[10px] font-mono text-[#777777] block mb-1">MAX ($)</span>
+                <span className="text-[10px] font-mono text-[#777777] block mb-1">MAX (₹)</span>
                 <input
                   type="number"
-                  placeholder="1000"
+                  placeholder="35000"
                   value={localFilters.maxPrice || ''}
                   onChange={(e) =>
                     setLocalFilters((prev) => ({

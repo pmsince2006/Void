@@ -19,45 +19,45 @@ const EDITORIAL_TILES: EditorialTile[] = [
     id: 'tile-1',
     label: 'STRUCTURED SILHOUETTES',
     code: '01 / FORM',
-    category: 'OUTERWEAR',
+    category: 'UPPERS',
     spanClass: 'md:col-span-6 lg:col-span-5 md:row-span-2 min-h-[500px] sm:min-h-[640px] lg:min-h-[720px]',
     image: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1200&q=85',
     objectPosition: 'object-top',
     description: 'Clean lines. Everyday form.',
-    link: '/shop?category=outerwear'
+    link: '/shop?category=uppers'
   },
   {
     id: 'tile-2',
     label: 'CITY UNIFORM',
     code: '02 / UTILITY',
-    category: 'OUTERWEAR',
+    category: 'UPPERS',
     spanClass: 'md:col-span-6 lg:col-span-7 min-h-[280px] sm:min-h-[340px]',
     image: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1200&q=85',
     objectPosition: 'object-center',
     description: 'Functional layers for daily movement.',
-    link: '/shop?category=outerwear'
+    link: '/shop?category=uppers'
   },
   {
     id: 'tile-3',
     label: 'DECONSTRUCTED TAILORING',
     code: '03 / TONE',
-    category: 'TAILORING',
+    category: 'UPPERS',
     spanClass: 'md:col-span-6 lg:col-span-4 min-h-[320px] sm:min-h-[380px]',
     image: 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=1000&q=85',
     objectPosition: 'object-center',
     description: 'Modern drape and relaxed tailoring.',
-    link: '/shop?category=tailoring'
+    link: '/shop?collection=COLLAPSED%20TAILORING'
   },
   {
     id: 'tile-4',
     label: 'HEAVYWEIGHT FORMS',
     code: '04 / VOLUME',
-    category: 'KNITWEAR',
+    category: 'UPPERS',
     spanClass: 'md:col-span-6 lg:col-span-3 min-h-[320px] sm:min-h-[380px]',
     image: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=1000&q=85',
     objectPosition: 'object-center',
     description: '700gsm cotton fleece with dropped shoulders.',
-    link: '/shop?category=knitwear'
+    link: '/shop?category=uppers'
   }
 ];
 

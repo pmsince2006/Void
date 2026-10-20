@@ -10,12 +10,12 @@ const FIXTURE_PRODUCTS: Product[] = [
     subtitle: 'Wave 01 // Master Silhouette',
     sku: 'VD-01-W01-001',
     slug: 'structured-collapse-coat',
-    category: 'outerwear',
+    category: 'uppers',
     collection: 'CITY ARMOR',
     drop: 'DROP 01 // HORIZON',
     wave: 'W01',
-    price: 495,
-    currency: 'USD',
+    price: 24990,
+    currency: 'INR',
     description: 'Double-breasted oversized silhouette in 620gsm bonded Italian wool blend. Features sharp asymmetric lapel construction, dropped ergonomic shoulders, and integrated storm throat-latch.',
     editorialDescription: 'Born in urban shadows. A sculptural garment that shields against wind and visual noise, sculpted for dramatic drape.',
     details: [
@@ -27,7 +27,7 @@ const FIXTURE_PRODUCTS: Product[] = [
     ],
     materials: ['78% Virgin Wool', '18% Polyamide', '4% Cashmere'],
     fit: 'Exaggerated unisex oversized fit. Size down for true-to-size proportion.',
-    sizes: ['01 (S)', '02 (M)', '03 (L)', '04 (XL)'],
+    sizes: ['S', 'M', 'L', 'XL'],
     colors: [
       { name: 'Monolith Black', hex: '#111111' },
       { name: 'Raw Slate', hex: '#3E3E3E' }
@@ -50,12 +50,12 @@ const FIXTURE_PRODUCTS: Product[] = [
     subtitle: 'Wave 01 // City Armor',
     sku: 'VD-01-W01-002',
     slug: 'ballistic-monolith-parka',
-    category: 'outerwear',
+    category: 'uppers',
     collection: 'CITY ARMOR',
     drop: 'DROP 01 // HORIZON',
     wave: 'W01',
-    price: 540,
-    currency: 'USD',
+    price: 27990,
+    currency: 'INR',
     description: 'Longline weatherproof tactical shell crafted from 3-layer laminated Cordura nylon. Concealed double two-way storm zippers, structured geometric hood with wire reinforcement, and articulated sleeve darts.',
     editorialDescription: 'Engineered as kinetic protection for metropolitan movement.',
     details: [
@@ -67,7 +67,7 @@ const FIXTURE_PRODUCTS: Product[] = [
     ],
     materials: ['100% Technical Polyamide with DWR finish'],
     fit: 'Relaxed elongated cut designed to layer over heavy knits.',
-    sizes: ['01 (S)', '02 (M)', '03 (L)', '04 (XL)'],
+    sizes: ['S', 'M', 'L', 'XL'],
     colors: [
       { name: 'Void Black', hex: '#111111' },
       { name: 'Ash Concrete', hex: '#777777' }
@@ -90,12 +90,12 @@ const FIXTURE_PRODUCTS: Product[] = [
     subtitle: 'Wave 02 // Collapsed Tailoring',
     sku: 'VD-01-W02-003',
     slug: 'deconstructed-tailored-blazer',
-    category: 'tailoring',
+    category: 'uppers',
     collection: 'COLLAPSED TAILORING',
     drop: 'DROP 01 // HORIZON',
     wave: 'W02',
-    price: 380,
-    currency: 'USD',
+    price: 19990,
+    currency: 'INR',
     description: 'Unstructured single-breasted blazer featuring raw raw-edge hems, exposed interior canvas bonding, and exaggerated padded shoulders that command presence.',
     editorialDescription: 'The meeting point of brutalism and modern bespoke tailoring.',
     details: [
@@ -106,7 +106,7 @@ const FIXTURE_PRODUCTS: Product[] = [
     ],
     materials: ['65% Wool', '35% Linen'],
     fit: 'Broad shoulder, boxy torso drape.',
-    sizes: ['01 (S)', '02 (M)', '03 (L)', '04 (XL)'],
+    sizes: ['S', 'M', 'L', 'XL'],
     colors: [
       { name: 'Pitch Black', hex: '#111111' },
       { name: 'Warm Ivory', hex: '#F4F2ED' }
@@ -129,12 +129,12 @@ const FIXTURE_PRODUCTS: Product[] = [
     subtitle: 'Wave 02 // Noise & Pulse',
     sku: 'VD-01-W02-004',
     slug: 'heavy-gauge-sub-bass-hoodie',
-    category: 'knitwear',
+    category: 'uppers',
     collection: 'HEAVY FLEECE',
     drop: 'DROP 01 // HORIZON',
     wave: 'W02',
-    price: 240,
-    currency: 'USD',
+    price: 11990,
+    currency: 'INR',
     description: 'Formulated in custom 700gsm French terry knit with double-layered crossover hood and no drawstrings for a pure minimal facade. Garment dyed in stone-cold mineral pigments.',
     editorialDescription: 'Massive weight, tactile insulation, and an uncompromising silhouette.',
     details: [
@@ -145,7 +145,7 @@ const FIXTURE_PRODUCTS: Product[] = [
     ],
     materials: ['100% Organic Heavyweight Cotton'],
     fit: 'Voluminous boxy crop.',
-    sizes: ['01 (S)', '02 (M)', '03 (L)', '04 (XL)'],
+    sizes: ['S', 'M', 'L', 'XL'],
     colors: [
       { name: 'Concrete Grey', hex: '#777777' },
       { name: 'Near Black', hex: '#111111' }
@@ -172,8 +172,8 @@ const FIXTURE_PRODUCTS: Product[] = [
     collection: 'COLLAPSED TAILORING',
     drop: 'DROP 01 // HORIZON',
     wave: 'W03',
-    price: 290,
-    currency: 'USD',
+    price: 14990,
+    currency: 'INR',
     description: 'Double deep inverted pleats cascading into an architectural wide-leg stance. Extended waistband tab with industrial gunmetal buckle closures.',
     editorialDescription: 'Volumetric movement that redefines the modern streetwear stance.',
     details: [
@@ -184,7 +184,7 @@ const FIXTURE_PRODUCTS: Product[] = [
     ],
     materials: ['70% Wool', '30% Technical Viscose'],
     fit: 'High rise, dramatic wide leg fluid drape.',
-    sizes: ['01 (S)', '02 (M)', '03 (L)', '04 (XL)'],
+    sizes: ['S', 'M', 'L', 'XL'],
     colors: [
       { name: 'Monolith Black', hex: '#111111' },
       { name: 'Stone Bone', hex: '#D6D1C8' }
@@ -211,8 +211,8 @@ const FIXTURE_PRODUCTS: Product[] = [
     collection: 'TECHNICAL ACCESSORIES',
     drop: 'DROP 01 // HORIZON',
     wave: 'W03',
-    price: 185,
-    currency: 'USD',
+    price: 8990,
+    currency: 'INR',
     description: 'Modular ballistic nylon chest rig with Fidlock magnetic V-buckles. Convertible to crossbody holster or standalone utility pouch.',
     editorialDescription: 'High-speed modular utility gear constructed for functional carrying.',
     details: [
@@ -245,12 +245,12 @@ const FIXTURE_PRODUCTS: Product[] = [
     subtitle: 'Wave 04 // Upcoming Protocol',
     sku: 'VD-01-W04-007',
     slug: 'raw-edge-oversized-kimono-coat',
-    category: 'outerwear',
+    category: 'uppers',
     collection: 'CITY ARMOR',
     drop: 'DROP 01 // HORIZON',
     wave: 'W04',
-    price: 460,
-    currency: 'USD',
+    price: 22990,
+    currency: 'INR',
     description: 'East-meets-brutalist oversized open wrap coat with obi tie belt, raw needle-punched wool edges, and deep side slits for walking freedom.',
     editorialDescription: 'Sculpted for ceremonial presence and urban utility.',
     details: [
@@ -261,7 +261,7 @@ const FIXTURE_PRODUCTS: Product[] = [
     ],
     materials: ['100% Boiled Virgin Wool'],
     fit: 'Volumetric cocoon drape.',
-    sizes: ['01 (S)', '02 (M)', '03 (L)', '04 (XL)'],
+    sizes: ['S', 'M', 'L', 'XL'],
     colors: [
       { name: 'Monolith Black', hex: '#111111' },
       { name: 'Concrete Grey', hex: '#777777' }
@@ -284,12 +284,12 @@ const FIXTURE_PRODUCTS: Product[] = [
     subtitle: 'Wave 05 // Horizon Protocol',
     sku: 'VD-01-W05-008',
     slug: 'asymmetric-heavy-hooded-cape',
-    category: 'outerwear',
+    category: 'uppers',
     collection: 'CITY ARMOR',
     drop: 'DROP 01 // HORIZON',
     wave: 'W05',
-    price: 510,
-    currency: 'USD',
+    price: 25990,
+    currency: 'INR',
     description: 'Sculptural technical cape with asymmetric front zipper and integrated face shield scarf. Built for extreme silhouettes.',
     editorialDescription: 'The pinnacle statement of the Horizon Protocol.',
     details: [
@@ -299,7 +299,7 @@ const FIXTURE_PRODUCTS: Product[] = [
     ],
     materials: ['70% Wool', '30% Technical Elastane'],
     fit: 'Sweeping fluid geometric drape.',
-    sizes: ['01 (S)', '02 (M)', '03 (L)'],
+    sizes: ['S', 'M', 'L'],
     colors: [
       { name: 'Monolith Black', hex: '#111111' }
     ],
@@ -372,7 +372,14 @@ export const productService = {
     let items = [...FIXTURE_PRODUCTS];
 
     if (params?.category) {
-      items = items.filter((p) => p.category.toLowerCase() === params.category?.toLowerCase());
+      const cat = params.category.toLowerCase();
+      const canonical =
+        ['outerwear', 'tailoring', 'knitwear', 'tops', 'uppers'].includes(cat) ? 'uppers' :
+        ['bottoms', 'pants', 'trousers'].includes(cat) ? 'bottoms' :
+        ['shoes', 'footwear', 'sneakers'].includes(cat) ? 'shoes' :
+        ['accessories', 'hardware', 'bags', 'caps'].includes(cat) ? 'accessories' : cat;
+
+      items = items.filter((p) => p.category.toLowerCase() === canonical);
     }
 
     if (params?.collection) {

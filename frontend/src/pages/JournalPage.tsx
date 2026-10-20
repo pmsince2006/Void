@@ -25,7 +25,7 @@ const ARTICLES: JournalArticle[] = [
     readTime: '3 MIN READ',
     image: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=1000&q=85',
     linkText: 'EXPLORE FLEECE & KNITS',
-    linkHref: '/shop?category=knitwear',
+    linkHref: '/shop?category=uppers',
   },
   {
     id: 'art-02',
@@ -90,13 +90,13 @@ export const JournalPage: React.FC = () => {
           </div>
 
           {/* Text Stage */}
-          <div className="lg:col-span-5 p-8 sm:p-12 lg:p-16 flex flex-col justify-between bg-[#F4F2ED]">
-            <div>
+          <div className="lg:col-span-5 min-w-0 p-6 sm:p-8 lg:p-8 xl:p-12 2xl:p-16 flex flex-col justify-between bg-[#F4F2ED]">
+            <div className="min-w-0">
               <div className="flex items-center justify-between font-mono text-xs text-[#777777] mb-4">
                 <span>OCTOBER 2026</span>
                 <span>5 MIN READ</span>
               </div>
-              <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold uppercase tracking-tight text-[#111111] mb-6 leading-none">
+              <h2 className="font-display text-2xl sm:text-3xl lg:text-[1.65rem] xl:text-3xl 2xl:text-4xl font-extrabold uppercase tracking-tight text-[#111111] mb-6 leading-[1.12] break-normal hyphens-none">
                 SCULPTURAL PROPORTIONS IN METROPOLITAN SPACES
               </h2>
               <p className="font-mono text-xs sm:text-sm text-[#777777] leading-relaxed mb-4">

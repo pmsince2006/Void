@@ -186,14 +186,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
       {/* Product Meta */}
       <div className="pt-3 pb-1 flex flex-col justify-between">
-        <div className="flex items-start justify-between gap-2 mb-1">
+        <div className="flex items-start justify-between gap-2 mb-1 min-w-0">
           <Link
             to={`/product/${product.slug}`}
-            className="font-heading font-bold text-xs uppercase tracking-wider text-[#111111] hover:text-[#777777] transition-colors line-clamp-1"
+            className="font-heading font-bold text-xs uppercase tracking-wider text-[#111111] hover:text-[#777777] transition-colors line-clamp-1 min-w-0 flex-1"
           >
             {product.name}
           </Link>
-          <PriceDisplay price={product.price} size="sm" />
+          <PriceDisplay price={product.price} size="sm" className="shrink-0" />
         </div>
 
         <div className="flex items-center justify-between text-[11px] font-mono text-[#777777]">

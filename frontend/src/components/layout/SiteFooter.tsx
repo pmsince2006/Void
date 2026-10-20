@@ -9,12 +9,12 @@ export const SiteFooter: React.FC = () => {
     const updateTime = () => {
       const now = new Date();
       setTimeStr(
-        now.toLocaleTimeString('en-US', {
+        now.toLocaleTimeString('en-IN', {
           hour12: false,
           hour: '2-digit',
           minute: '2-digit',
           second: '2-digit',
-          timeZone: 'UTC'
+          timeZone: 'Asia/Kolkata'
         })
       );
     };
@@ -54,7 +54,7 @@ export const SiteFooter: React.FC = () => {
               <span>•</span>
               <span className="flex items-center gap-1.5">
                 <Globe className="w-3.5 h-3.5" />
-                GLOBAL DISPATCH
+                SHIPPING ACROSS INDIA
               </span>
               <span>•</span>
               <span className="flex items-center gap-1.5">
@@ -70,32 +70,27 @@ export const SiteFooter: React.FC = () => {
           {/* Col 1 */}
           <div className="space-y-4">
             <h4 className="font-mono text-xs uppercase tracking-widest text-[#777777]">
-              [ 01 // SILHOUETTES ]
+              [ 01 // CATEGORIES ]
             </h4>
             <ul className="space-y-2.5 text-xs font-mono">
               <li>
-                <Link to="/shop?category=outerwear" className="hover:text-white transition-colors">
-                  Outerwear & Armor
-                </Link>
-              </li>
-              <li>
-                <Link to="/shop?category=tailoring" className="hover:text-white transition-colors">
-                  Collapsed Tailoring
-                </Link>
-              </li>
-              <li>
-                <Link to="/shop?category=knitwear" className="hover:text-white transition-colors">
-                  Heavy Fleece & Knits
+                <Link to="/shop?category=uppers" className="hover:text-white transition-colors">
+                  Uppers
                 </Link>
               </li>
               <li>
                 <Link to="/shop?category=bottoms" className="hover:text-white transition-colors">
-                  Pleated Wide Trousers
+                  Bottoms
+                </Link>
+              </li>
+              <li>
+                <Link to="/shop?category=shoes" className="hover:text-white transition-colors">
+                  Shoes
                 </Link>
               </li>
               <li>
                 <Link to="/shop?category=accessories" className="hover:text-white transition-colors">
-                  Tactical Accessories
+                  Accessories
                 </Link>
               </li>
             </ul>
@@ -199,7 +194,7 @@ export const SiteFooter: React.FC = () => {
           <div className="flex items-center gap-4">
             <span className="text-[#F4F2ED] font-bold">VOID ATELIER © 2026</span>
             <span>•</span>
-            <span>SYSTEM TIME: {timeStr ? `${timeStr} UTC` : 'CALCULATING...'}</span>
+            <span>SYSTEM TIME: {timeStr ? `${timeStr} IST` : 'CALCULATING...'}</span>
           </div>
 
           <button

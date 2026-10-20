@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
+import { PriceDisplay } from '../common/PriceDisplay';
 
 interface LookbookItem {
   id: string;
@@ -17,43 +18,43 @@ const LOOKBOOK_ITEMS: LookbookItem[] = [
     id: 'lk-01',
     code: 'VD-01-W01',
     title: 'STRUCTURED COLLAPSE COAT',
-    price: 495,
+    price: 24990,
     slug: 'structured-collapse-coat',
     image: 'https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&w=800&q=85',
-    category: 'OUTERWEAR'
+    category: 'UPPERS'
   },
   {
     id: 'lk-02',
     code: 'VD-01-W01',
     title: 'BALLISTIC MONOLITH PARKA',
-    price: 540,
+    price: 27990,
     slug: 'ballistic-monolith-parka',
     image: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=800&q=85',
-    category: 'OUTERWEAR'
+    category: 'UPPERS'
   },
   {
     id: 'lk-03',
     code: 'VD-01-W02',
     title: 'DECONSTRUCTED TAILORED BLAZER',
-    price: 380,
+    price: 19990,
     slug: 'deconstructed-tailored-blazer',
     image: 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=800&q=85',
-    category: 'TAILORING'
+    category: 'UPPERS'
   },
   {
     id: 'lk-04',
     code: 'VD-01-W02',
     title: 'HEAVY GAUGE SUB-BASS HOODIE',
-    price: 240,
+    price: 11990,
     slug: 'heavy-gauge-sub-bass-hoodie',
     image: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=800&q=85',
-    category: 'KNITWEAR'
+    category: 'UPPERS'
   },
   {
     id: 'lk-05',
     code: 'VD-01-W03',
     title: 'PLEATED WIDE ARCHIVE TROUSER',
-    price: 290,
+    price: 14990,
     slug: 'pleated-wide-archive-trouser',
     image: 'https://images.unsplash.com/photo-1508427953056-b00b8d78ebf5?auto=format&fit=crop&w=800&q=85',
     category: 'BOTTOMS'
@@ -120,9 +121,7 @@ export const LookbookStrip: React.FC = () => {
                 <h3 className="font-heading font-bold text-xs uppercase tracking-wider text-[#0B0B0B] group-hover:text-[#777777] transition-colors line-clamp-1">
                   {item.title}
                 </h3>
-                <p className="font-mono text-xs text-[#777777]">
-                  ${item.price} USD
-                </p>
+                <PriceDisplay price={item.price} size="sm" />
               </div>
             </Link>
           ))}

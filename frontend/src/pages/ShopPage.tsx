@@ -17,7 +17,18 @@ export const ShopPage: React.FC = () => {
 
   const [gridColumns, setGridColumns] = useState<2 | 4>(2);
 
-  const category = searchParams.get('category') || undefined;
+  const rawCategory = searchParams.get('category') || undefined;
+  // Normalize legacy and canonical category query parameters
+  const category = React.useMemo(() => {
+    if (!rawCategory) return undefined;
+    const lower = rawCategory.toLowerCase();
+    if (['outerwear', 'tailoring', 'knitwear', 'tops', 'uppers'].includes(lower)) return 'uppers';
+    if (['bottoms', 'pants', 'trousers'].includes(lower)) return 'bottoms';
+    if (['shoes', 'footwear', 'sneakers'].includes(lower)) return 'shoes';
+    if (['accessories', 'hardware', 'bags', 'caps'].includes(lower)) return 'accessories';
+    return lower;
+  }, [rawCategory]);
+
   const collection = searchParams.get('collection') || undefined;
   const search = searchParams.get('search') || undefined;
   const drop = searchParams.get('drop') || undefined;
@@ -73,10 +84,9 @@ export const ShopPage: React.FC = () => {
 
   const categories = [
     { label: 'ALL SILHOUETTES', value: '' },
-    { label: 'OUTERWEAR', value: 'outerwear' },
-    { label: 'TAILORING', value: 'tailoring' },
-    { label: 'KNITWEAR & FLEECE', value: 'knitwear' },
+    { label: 'UPPERS', value: 'uppers' },
     { label: 'BOTTOMS', value: 'bottoms' },
+    { label: 'SHOES', value: 'shoes' },
     { label: 'ACCESSORIES', value: 'accessories' },
   ];
 
@@ -226,8 +236,12 @@ export const ShopPage: React.FC = () => {
         products={products}
         isLoading={isLoading}
         columns={gridColumns}
-        emptyTitle="NO PIECES MATCH CRITERIA"
-        emptyDescription="Try selecting a different category or clearing active filters."
+        emptyTitle={category === 'shoes' ? 'NO SHOES CURRENTLY CATALOGED' : 'NO PIECES MATCH CRITERIA'}
+        emptyDescription={
+          category === 'shoes'
+            ? 'Footwear releases are arriving in subsequent drops. Explore uppers and bottoms in the archive.'
+            : 'Try selecting a different category or clearing active filters.'
+        }
       />
 
       {/* Catalogue Status Footer */}

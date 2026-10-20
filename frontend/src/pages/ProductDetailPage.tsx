@@ -57,7 +57,7 @@ export const ProductDetailPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 flex items-center justify-center">
+      <div className="w-full max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 2xl:px-24 py-16 flex items-center justify-center">
         <div className="text-center font-mono text-xs uppercase tracking-widest text-[#777777]">
           TRANSMITTING SILHOUETTE DATA...
         </div>
@@ -67,7 +67,7 @@ export const ProductDetailPage: React.FC = () => {
 
   if (!product) {
     return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+      <div className="w-full max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 2xl:px-24 py-20 text-center">
         <h2 className="font-heading font-bold text-2xl uppercase text-[#111111] mb-4">
           SILHOUETTE NOT FOUND IN ARCHIVE
         </h2>
@@ -89,7 +89,7 @@ export const ProductDetailPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+    <div className="w-full max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 2xl:px-24 py-10 sm:py-16">
       {/* Breadcrumbs */}
       <Breadcrumbs
         items={[
@@ -101,7 +101,7 @@ export const ProductDetailPage: React.FC = () => {
       />
 
       {/* Main product showcase */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 xl:gap-16 pb-16 border-b border-[#111111]">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 xl:gap-16 pb-16 border-b border-[#111111]/20">
         {/* Left: Image Gallery */}
         <div className="lg:col-span-7 flex flex-col-reverse md:flex-row gap-4">
           {/* Thumbnails */}
@@ -120,7 +120,7 @@ export const ProductDetailPage: React.FC = () => {
                 <img
                   src={img}
                   alt={`${product.name} view ${idx + 1}`}
-                  className="w-full h-full object-cover filter grayscale contrast-125"
+                  className="w-full h-full object-cover"
                 />
               </button>
             ))}
@@ -131,7 +131,7 @@ export const ProductDetailPage: React.FC = () => {
             <img
               src={product.images[activeImageIndex] || product.images[0]}
               alt={product.name}
-              className="w-full h-full object-cover filter grayscale contrast-125 transition-all duration-500"
+              className="w-full h-full object-cover transition-all duration-500"
             />
             {product.badge && (
               <div className="absolute top-4 left-4">
@@ -265,7 +265,7 @@ export const ProductDetailPage: React.FC = () => {
             <div className="pt-4 border-t border-[#111111]/10 grid grid-cols-2 gap-4 text-[11px] font-mono text-[#777777]">
               <div className="flex items-center gap-2">
                 <Truck className="w-3.5 h-3.5 text-[#111111]" />
-                <span>SECURE EXPRESS DISPATCH</span>
+                <span>SHIPPING ACROSS INDIA</span>
               </div>
               <div className="flex items-center gap-2">
                 <Shield className="w-3.5 h-3.5 text-[#111111]" />

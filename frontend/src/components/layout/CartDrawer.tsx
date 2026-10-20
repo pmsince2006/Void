@@ -126,8 +126,8 @@ export const CartDrawer: React.FC = () => {
                 <span>{totalCount} ITEMS</span>
               </div>
               <div className="flex justify-between text-[#777777]">
-                <span>COMPLIMENTARY DISPATCH:</span>
-                <span className="text-emerald-700 uppercase">[ INCLUDED ]</span>
+                <span>SHIPPING ACROSS INDIA:</span>
+                <span className="text-emerald-700 uppercase">[ COMPLIMENTARY ]</span>
               </div>
               <div className="flex justify-between text-[#111111] font-bold text-sm pt-2 border-t border-[#111111]/15">
                 <span>TOTAL VALUATION:</span>

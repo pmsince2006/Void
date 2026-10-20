@@ -13,7 +13,7 @@ export const AboutPage: React.FC = () => {
         <span className="text-[11px] font-mono tracking-widest text-[#777777] uppercase block mb-3">
           [ BRAND MANIFESTO // CONTEMPORARY STREETWEAR ]
         </span>
-        <h1 className="font-display text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold uppercase tracking-tight text-[#111111] leading-none mb-8">
+        <h1 className="font-display text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold uppercase tracking-tight text-[#111111] leading-none mb-8 break-normal hyphens-none">
           WEAR YOUR <br />
           OWN IDENTITY.
         </h1>
@@ -75,12 +75,12 @@ export const AboutPage: React.FC = () => {
 
       {/* Editorial Image & Text Split */}
       <div className="border border-[#111111]/20 grid grid-cols-1 lg:grid-cols-12 group hover:border-[#111111] transition-colors overflow-hidden">
-        <div className="lg:col-span-5 p-8 sm:p-14 lg:p-16 flex flex-col justify-between bg-[#F4F2ED]">
-          <div>
+        <div className="lg:col-span-5 min-w-0 p-8 sm:p-12 lg:p-12 xl:p-16 flex flex-col justify-between bg-[#F4F2ED]">
+          <div className="min-w-0">
             <span className="text-[10px] font-mono tracking-widest text-[#777777] uppercase block mb-3">
               [ ATELIER PERSPECTIVE ]
             </span>
-            <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold uppercase tracking-tight text-[#111111] mb-6 leading-none">
+            <h2 className="font-display text-2xl sm:text-3xl lg:text-3xl xl:text-4xl font-extrabold uppercase tracking-tight text-[#111111] mb-6 leading-[1.1] break-normal hyphens-none">
               BORN IN URBAN SHADOWS.
             </h2>
             <p className="font-mono text-xs sm:text-sm text-[#777777] leading-relaxed mb-4">

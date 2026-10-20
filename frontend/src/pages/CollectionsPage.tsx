@@ -67,13 +67,13 @@ export const CollectionsPage: React.FC = () => {
               </div>
 
               {/* Text & Meta Content */}
-              <div className="lg:w-5/12 min-w-0 p-8 sm:p-10 lg:p-10 xl:p-14 2xl:p-16 flex flex-col justify-between bg-[#F4F2ED]">
+              <div className="lg:w-5/12 min-w-0 p-6 sm:p-8 lg:p-8 xl:p-12 2xl:p-14 flex flex-col justify-between bg-[#F4F2ED]">
                 <div className="min-w-0">
                   <div className="flex items-center justify-between font-mono text-xs text-[#777777] mb-4">
                     <span>ARCHIVE 0{idx + 1}</span>
                     <span>{col.itemCount} PIECES</span>
                   </div>
-                  <h2 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-3xl xl:text-4xl 2xl:text-5xl font-extrabold uppercase tracking-tight text-[#111111] mb-4 leading-[1.08] break-words">
+                  <h2 className="font-display text-2xl sm:text-3xl lg:text-[1.65rem] xl:text-3xl 2xl:text-4xl font-extrabold uppercase tracking-tight text-[#111111] mb-4 leading-[1.12] break-normal hyphens-none">
                     {col.title}
                   </h2>
                   <p className="font-mono text-xs sm:text-sm text-[#777777] leading-relaxed mb-8 max-w-md">

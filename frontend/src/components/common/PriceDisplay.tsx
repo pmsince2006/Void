@@ -11,7 +11,7 @@ export interface PriceDisplayProps {
 
 export const PriceDisplay: React.FC<PriceDisplayProps> = ({
   price,
-  currency = 'USD',
+  currency = 'INR',
   originalPrice,
   size = 'md',
   className = '',
@@ -24,14 +24,14 @@ export const PriceDisplay: React.FC<PriceDisplayProps> = ({
     xl: 'text-xl font-heading font-semibold'
   }[size];
 
-  const formattedPrice = new Intl.NumberFormat('en-US', {
+  const formattedPrice = new Intl.NumberFormat('en-IN', {
     style: 'currency',
     currency: currency,
     maximumFractionDigits: 0
   }).format(price);
 
   const formattedOriginal = originalPrice
-    ? new Intl.NumberFormat('en-US', {
+    ? new Intl.NumberFormat('en-IN', {
         style: 'currency',
         currency: currency,
         maximumFractionDigits: 0
