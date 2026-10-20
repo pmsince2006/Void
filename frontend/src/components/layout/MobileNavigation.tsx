@@ -1,12 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { X, Search, ArrowRight, ShieldCheck } from 'lucide-react';
+import { X, Search, ArrowRight, ShieldCheck, User } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
 
 export interface MobileNavigationProps {
   isOpen: boolean;
   onClose: () => void;
   links: { label: string; href: string }[];
   onOpenSearch: () => void;
+  onOpenAccount?: () => void;
 }
 
 export const MobileNavigation: React.FC<MobileNavigationProps> = ({
@@ -14,7 +16,9 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
   onClose,
   links,
   onOpenSearch,
+  onOpenAccount,
 }) => {
+  const { user } = useAuth();
   if (!isOpen) return null;
 
   return (
@@ -65,6 +69,21 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
             </span>
           </Link>
         ))}
+
+        {onOpenAccount && (
+          <button
+            onClick={onOpenAccount}
+            className="flex items-center justify-between group py-1 text-left w-full"
+          >
+            <span className="font-heading font-extrabold text-2xl uppercase tracking-wider text-[#111111] group-hover:translate-x-2 transition-transform flex items-center gap-2">
+              <User className="w-5 h-5 text-[#111111]" />
+              <span>{user ? user.name.split(' ')[0] : 'ACCOUNT'}</span>
+            </span>
+            <span className="font-mono text-xs text-[#777777]">
+              {user ? '[ACTIVE]' : '[AUTH]'}
+            </span>
+          </button>
+        )}
 
         <div className="pt-8 border-t border-[#111111]/20 space-y-4">
           <Link

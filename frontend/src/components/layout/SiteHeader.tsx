@@ -3,8 +3,10 @@ import { Link, useLocation } from 'react-router-dom';
 import { Search, ShoppingBag, Heart, User, Menu, X } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
+import { useAuth } from '../../context/AuthContext';
 import { MobileNavigation } from './MobileNavigation';
 import { Modal } from '../common/Modal';
+import { AccountModal } from '../common/AccountModal';
 import { SearchInput } from '../common/SearchInput';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,9 +14,11 @@ export const SiteHeader: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchModalOpen, setSearchModalOpen] = useState(false);
+  const [accountModalOpen, setAccountModalOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
+  const { user } = useAuth();
   const { totalCount: cartCount, openCart } = useCart();
   const { totalCount: wishlistCount, openWishlist } = useWishlist();
 
@@ -105,15 +109,20 @@ export const SiteHeader: React.FC = () => {
               <span className="hidden lg:inline text-[11px]">SEARCH</span>
             </button>
 
-            {/* Account Link */}
-            <Link
-              to="/about"
+            {/* Account Trigger */}
+            <button
+              onClick={() => setAccountModalOpen(true)}
               className="hidden sm:flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-[#111111] hover:text-[#777777] transition-colors"
               aria-label="User Account"
             >
               <User className="w-4 h-4 stroke-[1.75]" />
-              <span className="hidden lg:inline text-[11px]">ACCOUNT</span>
-            </Link>
+              <span className="hidden lg:inline text-[11px]">
+                {user ? user.name.split(' ')[0] : 'ACCOUNT'}
+              </span>
+              {user && (
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" title="Active Session" />
+              )}
+            </button>
 
             {/* Wishlist Trigger */}
             <button
@@ -162,6 +171,16 @@ export const SiteHeader: React.FC = () => {
           setMobileMenuOpen(false);
           setSearchModalOpen(true);
         }}
+        onOpenAccount={() => {
+          setMobileMenuOpen(false);
+          setAccountModalOpen(true);
+        }}
+      />
+
+      {/* Account Identity Modal */}
+      <AccountModal
+        isOpen={accountModalOpen}
+        onClose={() => setAccountModalOpen(false)}
       />
 
       {/* Search Modal */}

@@ -23,15 +23,20 @@ export async function apiClient<T>(endpoint: string, options: RequestInit = {}):
   });
 
   try {
-    const res = await fetch(url, { ...options, headers });
+    const res = await fetch(url, {
+      ...options,
+      headers,
+      credentials: options.credentials || 'include' // Include HttpOnly cookies for session authentication
+    });
     if (!res.ok) {
-      let errorBody = null;
+      let errorBody: any = null;
       try {
         errorBody = await res.json();
       } catch {
         errorBody = await res.text();
       }
-      throw new ApiError(res.statusText || 'Request failed', res.status, errorBody);
+      const message = errorBody?.message || res.statusText || 'Request failed';
+      throw new ApiError(message, res.status, errorBody);
     }
     return (await res.json()) as T;
   } catch (err: any) {
