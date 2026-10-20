@@ -5,6 +5,8 @@ import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import { connectDatabase, isDatabaseConnected } from './config/database';
 import authRoutes from './routes/authRoutes';
+import productRoutes from './routes/productRoutes';
+import collectionRoutes from './routes/collectionRoutes';
 
 // Load environment configuration from .env if present
 dotenv.config();
@@ -62,8 +64,10 @@ app.get('/api/health', (_req: Request, res: Response) => {
   });
 });
 
-// 6. Authentication API Routes
+// 6. API Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/products', productRoutes);
+app.use('/api/collections', collectionRoutes);
 
 // 7. Catch-all 404 Handler for Unknown Routes
 app.use((req: Request, res: Response) => {

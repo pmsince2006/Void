@@ -1,5 +1,6 @@
 import { Product, ProductFilterParams } from '../types/product';
 import { Collection } from '../types/cart';
+import { apiClient } from './api';
 
 // Fallback high-fashion editorial imagery inspired by the uploaded visual reference
 // Monochromatic studio backgrounds, concrete textures, draped silhouettes
@@ -365,79 +366,77 @@ const FIXTURE_COLLECTIONS: Collection[] = [
 ];
 
 export const productService = {
+  /**
+   * Fetches products from the backend catalogue API with filtering and sorting.
+   */
   async getProducts(params?: ProductFilterParams): Promise<Product[]> {
-    // Simulate real asynchronous network delay
-    await new Promise((resolve) => setTimeout(resolve, 200));
+    const query = new URLSearchParams();
+    if (params?.category) query.set('category', params.category);
+    if (params?.collection) query.set('collection', params.collection);
+    if (params?.search) query.set('search', params.search);
+    if (params?.drop) query.set('drop', params.drop);
+    if (params?.minPrice !== undefined) query.set('minPrice', params.minPrice.toString());
+    if (params?.maxPrice !== undefined) query.set('maxPrice', params.maxPrice.toString());
+    if (params?.sort) query.set('sort', params.sort);
 
-    let items = [...FIXTURE_PRODUCTS];
+    const queryString = query.toString();
+    const endpoint = queryString ? `/products?${queryString}` : '/products';
 
-    if (params?.category) {
-      const cat = params.category.toLowerCase();
-      const canonical =
-        ['outerwear', 'tailoring', 'knitwear', 'tops', 'uppers'].includes(cat) ? 'uppers' :
-        ['bottoms', 'pants', 'trousers'].includes(cat) ? 'bottoms' :
-        ['shoes', 'footwear', 'sneakers'].includes(cat) ? 'shoes' :
-        ['accessories', 'hardware', 'bags', 'caps'].includes(cat) ? 'accessories' : cat;
-
-      items = items.filter((p) => p.category.toLowerCase() === canonical);
+    try {
+      const res = await apiClient<{ status: string; count: number; products: Product[] }>(endpoint);
+      return res.products;
+    } catch (err: any) {
+      console.error(`[productService] Error requesting ${endpoint}:`, err?.message || err);
+      throw err;
     }
-
-    if (params?.collection) {
-      items = items.filter((p) => p.collection.toLowerCase().includes(params.collection!.toLowerCase()));
-    }
-
-    if (params?.search) {
-      const q = params.search.toLowerCase();
-      items = items.filter(
-        (p) =>
-          p.name.toLowerCase().includes(q) ||
-          p.sku.toLowerCase().includes(q) ||
-          p.description.toLowerCase().includes(q) ||
-          p.collection.toLowerCase().includes(q)
-      );
-    }
-
-    if (params?.minPrice !== undefined) {
-      items = items.filter((p) => p.price >= params.minPrice!);
-    }
-
-    if (params?.maxPrice !== undefined) {
-      items = items.filter((p) => p.price <= params.maxPrice!);
-    }
-
-    if (params?.sort) {
-      if (params.sort === 'price-asc') {
-        items.sort((a, b) => a.price - b.price);
-      } else if (params.sort === 'price-desc') {
-        items.sort((a, b) => b.price - a.price);
-      } else if (params.sort === 'newest') {
-        items.sort((a, b) => (b.isNewDrop ? 1 : 0) - (a.isNewDrop ? 1 : 0));
-      }
-    }
-
-    return items;
   },
 
+  /**
+   * Fetches new arrivals from the backend catalogue.
+   */
   async getNewArrivals(): Promise<Product[]> {
-    const all = await this.getProducts();
+    const all = await this.getProducts({ sort: 'newest' });
     return all.filter((p) => p.isNewDrop || p.releaseStatus === 'unlocked');
   },
 
+  /**
+   * Fetches featured garments for editorial showcase.
+   */
   async getFeaturedProducts(): Promise<Product[]> {
-    const all = await this.getProducts();
+    const all = await this.getProducts({ sort: 'featured' });
     return all.filter((p) => p.isFeatured);
   },
 
+  /**
+   * Fetches a single piece by its URL slug. Returns null if not found (404).
+   */
   async getProductBySlug(slug: string): Promise<Product | null> {
-    await new Promise((resolve) => setTimeout(resolve, 150));
-    return FIXTURE_PRODUCTS.find((p) => p.slug === slug) || null;
+    try {
+      const res = await apiClient<{ status: string; product: Product }>(`/products/${slug}`);
+      return res.product;
+    } catch (err: any) {
+      if (err?.status === 404) return null;
+      console.error(`[productService] Error requesting product "${slug}":`, err?.message || err);
+      throw err;
+    }
   },
 
+  /**
+   * Fetches curated atmospheres from the backend collections API.
+   */
   async getCollections(): Promise<Collection[]> {
-    await new Promise((resolve) => setTimeout(resolve, 150));
-    return [...FIXTURE_COLLECTIONS];
+    try {
+      const res = await apiClient<{ status: string; count: number; collections: Collection[] }>('/collections');
+      return res.collections;
+    } catch (err: any) {
+      console.error('[productService] Error requesting collections:', err?.message || err);
+      throw err;
+    }
   },
 
+  /**
+   * Simulates newsletter registration frequency link.
+   */
   async subscribeNewsletter(email: string): Promise<{ success: boolean; message: string }> {
     await new Promise((resolve) => setTimeout(resolve, 400));
     const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);

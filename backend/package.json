@@ -7,7 +7,10 @@
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "test": "tsx src/tests/auth.test.ts"
+    "test": "tsx src/tests/auth.test.ts && tsx src/tests/products.test.ts",
+    "test:auth": "tsx src/tests/auth.test.ts",
+    "test:products": "tsx src/tests/products.test.ts",
+    "seed": "tsx src/scripts/seedProducts.ts"
   },
   "keywords": [
     "void",
