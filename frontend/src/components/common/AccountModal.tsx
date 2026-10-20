@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Modal } from './Modal';
 import { useAuth } from '../../context/AuthContext';
-import { User, LogOut, ShieldCheck, AlertCircle, ArrowRight, Loader2 } from 'lucide-react';
+import { User, LogOut, ShieldCheck, AlertCircle, ArrowRight, Loader2, Package } from 'lucide-react';
 
 interface AccountModalProps {
   isOpen: boolean;
@@ -123,6 +124,21 @@ export const AccountModal: React.FC<AccountModalProps> = ({ isOpen, onClose }) =
             <div className="pt-2 flex items-center gap-2 text-[10px] font-mono text-[#777777]">
               <ShieldCheck className="w-3.5 h-3.5 text-[#111111]" />
               <span>CRYPTOGRAPHICALLY ENCRYPTED SESSION • HTTPO_NLY COOKIE AUTH</span>
+            </div>
+
+            {/* Order History Navigation */}
+            <div className="pt-3 border-t border-[#111111]/15">
+              <Link
+                to="/account/orders"
+                onClick={handleClose}
+                className="w-full py-2.5 px-3.5 bg-[#F4F2ED] border border-[#111111] hover:bg-[#111111] hover:text-[#F4F2ED] transition-colors flex items-center justify-between text-xs font-mono uppercase tracking-wider group"
+              >
+                <div className="flex items-center gap-2">
+                  <Package className="w-4 h-4 text-[#111111] group-hover:text-[#F4F2ED] transition-colors" />
+                  <span className="font-bold">DISPATCH ARCHIVE // ORDER HISTORY</span>
+                </div>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
             </div>
           </div>
 

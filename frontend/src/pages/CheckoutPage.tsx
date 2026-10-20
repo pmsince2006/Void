@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   ShieldCheck,
@@ -13,7 +13,8 @@ import {
   ChevronUp,
   Info,
   PackageCheck,
-  RotateCcw
+  RotateCcw,
+  Loader2
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
@@ -23,6 +24,8 @@ import { Button } from '../components/common/Button';
 import { PriceDisplay } from '../components/common/PriceDisplay';
 import { EmptyState } from '../components/common/EmptyState';
 import { AccountModal } from '../components/common/AccountModal';
+import { orderService, generateIdempotencyKey } from '../services/orderService';
+import { CreateOrderPayload } from '../types/order';
 import {
   ShippingAddress,
   CheckoutFormErrors,
@@ -42,7 +45,7 @@ const INITIAL_FORM: ShippingAddress = {
 
 export const CheckoutPage: React.FC = () => {
   const navigate = useNavigate();
-  const { items, totalCount, subtotal } = useCart();
+  const { items, totalCount, subtotal, refreshCart } = useCart();
   const { user, isAuthenticated, isLoading: authLoading } = useAuth();
   const { addToast } = useToast();
 
@@ -51,7 +54,11 @@ export const CheckoutPage: React.FC = () => {
   const [errors, setErrors] = useState<CheckoutFormErrors>({});
   const [accountModalOpen, setAccountModalOpen] = useState(false);
   const [mobileSummaryOpen, setMobileSummaryOpen] = useState(false);
-  const [allocationVerified, setAllocationVerified] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
+  // Scoped idempotency key preserved across network retries of the same intended order
+  const idempotencyKeyRef = useRef<string | null>(null);
 
   // Auto-populate customer info from authenticated user session
   useEffect(() => {
@@ -136,6 +143,7 @@ export const CheckoutPage: React.FC = () => {
   }, [form, validateField]);
 
   const handleChange = (field: keyof ShippingAddress, value: string) => {
+    setSubmitError(null);
     setForm((prev) => ({ ...prev, [field]: value }));
     if (touched[field]) {
       const error = validateField(field, value);
@@ -149,8 +157,9 @@ export const CheckoutPage: React.FC = () => {
     setErrors((prev) => ({ ...prev, [field]: error }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSubmitting) return;
 
     // Mark all fields as touched
     const allTouched: Partial<Record<keyof ShippingAddress, boolean>> = {};
@@ -165,15 +174,76 @@ export const CheckoutPage: React.FC = () => {
       return;
     }
 
+    if (items.length === 0) {
+      addToast('Your bag is empty. Please select pieces before placing an order.', 'error');
+      return;
+    }
+
     const isValid = validateAll();
     if (!isValid) {
       addToast('Please resolve the highlighted shipping fields before proceeding.', 'error', 'INVALID DISPATCH');
       return;
     }
 
-    // Stage 7A Verification Success: Details recorded without simulating fake payment
-    setAllocationVerified(true);
-    addToast('DISPATCH SPECIFICATIONS VERIFIED // Ready for Stage 7B order allocation.', 'success', 'STAGE 7A COMPLETE');
+    // Assign a unique idempotency key for this intended order submission
+    if (!idempotencyKeyRef.current) {
+      idempotencyKeyRef.current = generateIdempotencyKey();
+    }
+
+    setSubmitError(null);
+    setIsSubmitting(true);
+
+    try {
+      const payload: CreateOrderPayload = {
+        shippingAddress: {
+          fullName: form.fullName.trim(),
+          addressLine1: form.addressLine1.trim(),
+          addressLine2: form.addressLine2 ? form.addressLine2.trim() : undefined,
+          city: form.city.trim(),
+          state: form.state.trim(),
+          pinCode: form.pinCode.trim(),
+          phone: form.phone.trim(),
+          email: form.email.trim()
+        },
+        customer: {
+          name: form.fullName.trim(),
+          email: form.email.trim(),
+          phone: form.phone.trim()
+        },
+        items: items.map((i) => ({
+          productId: i.productId,
+          size: i.size,
+          color: i.color,
+          quantity: i.quantity
+        }))
+      };
+
+      const res = await orderService.createOrder(payload, idempotencyKeyRef.current);
+
+      // Successfully confirmed by backend!
+      // Clear the idempotency key for future new orders
+      idempotencyKeyRef.current = null;
+
+      // Refresh cart in context (backend already cleared it in MongoDB)
+      try {
+        await refreshCart();
+      } catch {
+        // ignore
+      }
+
+      addToast(`ORDER ${res.order.orderNumber} INITIALIZED // Dispatch allocation reserved.`, 'success', 'ORDER CONFIRMED');
+
+      // Navigate to order details / confirmation page
+      navigate(`/account/orders/${res.order.orderNumber}`, {
+        state: { isNewOrder: true }
+      });
+    } catch (err: any) {
+      const msg = err?.message || 'Failed to initialize order transmission. Please try again.';
+      setSubmitError(msg);
+      addToast(msg, 'error', 'ORDER FAILED');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // Estimated shipping valuation (complimentary domestic dispatch across India)
@@ -620,89 +690,38 @@ export const CheckoutPage: React.FC = () => {
                 </p>
               </div>
 
+              {/* Submission Error Banner */}
+              {submitError && (
+                <div className="p-4 border border-red-500 bg-red-50 text-red-900 text-xs font-mono flex items-start gap-2.5 animate-fade-in shadow-sm">
+                  <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
+                  <div className="space-y-1">
+                    <strong className="block uppercase tracking-wider text-red-700">TRANSMISSION ERROR:</strong>
+                    <p>{submitError}</p>
+                    <p className="text-[10px] text-red-600/80 pt-1">
+                      Your shipping details have been safely preserved. You can re-authorize this dispatch.
+                    </p>
+                  </div>
+                </div>
+              )}
+
               {/* Continuation Button */}
               <div className="pt-2">
                 <Button
                   type="submit"
                   variant="solid"
                   size="lg"
+                  isLoading={isSubmitting}
+                  disabled={isSubmitting || items.length === 0}
                   className="w-full"
                   rightIcon={<ArrowRight className="w-4 h-4" />}
                 >
-                  VERIFY SHIPPING ALLOCATION // CONTINUE
+                  {isSubmitting ? 'TRANSMITTING ORDER ALLOCATION...' : 'AUTHORIZE DISPATCH // CONFIRM ORDER'}
                 </Button>
                 <p className="text-[10px] font-mono text-center text-[#777777] uppercase tracking-wider mt-3">
-                  STAGE 7A FOUNDATION • NO CHARGES APPLIED UNTIL PAYMENT VERIFICATION
+                  STAGE 7C INTEGRATION • ZERO PAYMENT CHARGED • ALLOCATION PENDING
                 </p>
               </div>
             </form>
-
-            {/* Stage 7A Allocation Verified Confirmation Notice */}
-            {allocationVerified && (
-              <div className="border-2 border-[#111111] p-6 bg-white space-y-4 animate-fade-in shadow-lg">
-                <div className="flex items-start gap-3">
-                  <PackageCheck className="w-6 h-6 text-emerald-700 shrink-0 mt-0.5" />
-                  <div>
-                    <h3 className="font-heading font-extrabold text-base uppercase tracking-tight text-[#111111]">
-                      SHIPPING ALLOCATION SPECIFICATION COMPLETE
-                    </h3>
-                    <p className="text-xs font-mono text-[#777777] mt-1">
-                      Recipient details for <strong className="text-[#111111]">{form.fullName}</strong> at <strong className="text-[#111111]">{form.city}, {form.state} - {form.pinCode}</strong> have been validated.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="p-4 bg-[#F4F2ED] border border-[#111111]/20 space-y-2 text-xs font-mono">
-                  <div className="flex justify-between text-[#777777]">
-                    <span>RECIPIENT:</span>
-                    <span className="font-bold text-[#111111] uppercase">{form.fullName}</span>
-                  </div>
-                  <div className="flex justify-between text-[#777777]">
-                    <span>CONTACT TELEPHONE:</span>
-                    <span className="font-bold text-[#111111]">{form.phone}</span>
-                  </div>
-                  <div className="flex justify-between text-[#777777]">
-                    <span>COURIER ROUTE:</span>
-                    <span className="font-bold text-[#111111] uppercase">{form.city}, {form.state} [{form.pinCode}]</span>
-                  </div>
-                  <div className="flex justify-between text-[#777777]">
-                    <span>GARMENTS ALLOCATED:</span>
-                    <span className="font-bold text-[#111111]">{totalCount} PIECES</span>
-                  </div>
-                </div>
-
-                <div className="text-[11px] font-mono text-[#777777] space-y-1">
-                  <p>
-                    <strong>NEXT STAGE QUEUED:</strong> Stage 7B will introduce backend order generation, cryptographic idempotency keys, and live payment processing (Cards, UPI, NetBanking).
-                  </p>
-                  <p className="text-emerald-800 font-medium">
-                    ✓ Garment allocations in your bag remain reserved and intact.
-                  </p>
-                </div>
-
-                <div className="pt-2 flex flex-col sm:flex-row gap-3">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    className="w-full sm:w-auto font-mono"
-                    leftIcon={<RotateCcw className="w-3.5 h-3.5" />}
-                    onClick={() => setAllocationVerified(false)}
-                  >
-                    MODIFY DISPATCH DETAILS
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="solid"
-                    size="sm"
-                    to="/shop"
-                    className="w-full sm:w-auto font-mono"
-                  >
-                    CONTINUE BROWSING ARCHIVE
-                  </Button>
-                </div>
-              </div>
-            )}
           </div>
 
           {/* Right Column: Order Summary & Live Valuation (Col 5) */}

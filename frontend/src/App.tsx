@@ -12,6 +12,8 @@ import { CollectionsPage } from './pages/CollectionsPage';
 import { JournalPage } from './pages/JournalPage';
 import { AboutPage } from './pages/AboutPage';
 import { CheckoutPage } from './pages/CheckoutPage';
+import { OrderHistoryPage } from './pages/OrderHistoryPage';
+import { OrderDetailPage } from './pages/OrderDetailPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 // Scroll to top on route change helper
@@ -44,6 +46,9 @@ export function App() {
                   <Route path="style-discovery" element={<Navigate to="/journal" replace />} />
                   <Route path="about" element={<AboutPage />} />
                   <Route path="checkout" element={<CheckoutPage />} />
+                  <Route path="account/orders" element={<OrderHistoryPage />} />
+                  <Route path="account/orders/:id" element={<OrderDetailPage />} />
+                  <Route path="order-confirmation/:id" element={<OrderDetailPage />} />
                   <Route path="*" element={<NotFoundPage />} />
                 </Route>
               </Routes>

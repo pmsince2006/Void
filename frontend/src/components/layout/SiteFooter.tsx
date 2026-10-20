@@ -185,6 +185,11 @@ export const SiteFooter: React.FC = () => {
                   Privacy Encrypted
                 </Link>
               </li>
+              <li>
+                <Link to="/account/orders" className="hover:text-white transition-colors">
+                  Order Archive
+                </Link>
+              </li>
             </ul>
           </div>
         </div>

@@ -22,6 +22,7 @@ interface CartContextType {
   removeFromCart: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
   clearCart: () => void;
+  refreshCart: () => Promise<void>;
   totalCount: number;
   subtotal: number;
 }
@@ -341,6 +342,17 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     [isAuthenticated, addToast]
   );
 
+  const refreshCart = useCallback(async () => {
+    if (isAuthenticated) {
+      try {
+        const serverCart = await cartService.getCart();
+        setItems(serverCart.items);
+      } catch (err) {
+        console.error('Failed to refresh bag from server:', err);
+      }
+    }
+  }, [isAuthenticated]);
+
   const totalCount = items.reduce((sum, item) => sum + (item.quantity || 0), 0);
   const subtotal = items.reduce(
     (sum, item) => sum + (item.product?.price || 0) * (item.quantity || 0),
@@ -359,6 +371,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         removeFromCart,
         updateQuantity,
         clearCart,
+        refreshCart,
         totalCount,
         subtotal
       }}
