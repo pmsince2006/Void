@@ -8,6 +8,13 @@ export interface IProductColor {
   hex: string;
 }
 
+export interface IProductRestorationEntry {
+  token: string;
+  orderNumber: string;
+  quantity: number;
+  restoredAt: Date;
+}
+
 export interface IProduct {
   id: string; // Stable string ID (e.g. "prod-001")
   name: string;
@@ -36,6 +43,8 @@ export interface IProduct {
   isNewDrop: boolean;
   releaseStatus: 'unlocked' | 'incoming' | 'archived';
   releaseDate?: string;
+  restorationHistory?: IProductRestorationEntry[];
+  pendingRestorations?: string[];
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -44,6 +53,16 @@ const productColorSchema = new Schema<IProductColor>(
   {
     name: { type: String, required: true, trim: true },
     hex: { type: String, required: true, trim: true }
+  },
+  { _id: false }
+);
+
+const productRestorationEntrySchema = new Schema<IProductRestorationEntry>(
+  {
+    token: { type: String, required: true },
+    orderNumber: { type: String, required: true },
+    quantity: { type: Number, required: true },
+    restoredAt: { type: Date, default: Date.now }
   },
   { _id: false }
 );
@@ -183,6 +202,14 @@ const productSchema = new Schema<IProduct>(
     },
     releaseDate: {
       type: String
+    },
+    restorationHistory: {
+      type: [productRestorationEntrySchema],
+      default: []
+    },
+    pendingRestorations: {
+      type: [String],
+      default: []
     }
   },
   {
@@ -205,5 +232,8 @@ productSchema.index({
   collection: 'text',
   description: 'text'
 });
+
+// Idempotent restoration token index for crash safety
+productSchema.index({ id: 1, 'restorationHistory.token': 1 });
 
 export const Product = model<IProduct>('Product', productSchema);

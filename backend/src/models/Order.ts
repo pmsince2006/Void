@@ -1,9 +1,11 @@
 import { Schema, model, Document, Types } from 'mongoose';
+import crypto from 'crypto';
 
 export type PaymentStatus = 'pending' | 'unpaid' | 'paid' | 'failed';
 export type OrderStatus = 'pending' | 'confirmed' | 'processing' | 'dispatched' | 'delivered' | 'cancelled';
 
 export interface IOrderItem {
+  lineItemId?: string;    // Persistent unique line-item identity
   productId: string;      // Stable string ID (e.g. "prod-001")
   name: string;           // Snapshot of product name
   slug?: string;          // Snapshot of product slug
@@ -49,13 +51,20 @@ export interface IOrder extends Document {
   cancelledAt?: Date;
   inventoryRestored?: boolean;
   restoredItems?: string[];
+  unresolvedItems?: string[];
   restorationLockedUntil?: Date;
+  restorationWorkerToken?: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
 const orderItemSchema = new Schema<IOrderItem>(
   {
+    lineItemId: {
+      type: String,
+      default: () => crypto.randomUUID(),
+      trim: true
+    },
     productId: {
       type: String,
       required: [true, 'Product ID is required'],
@@ -254,8 +263,16 @@ const orderSchema = new Schema<IOrder>(
       type: [String],
       default: []
     },
+    unresolvedItems: {
+      type: [String],
+      default: []
+    },
     restorationLockedUntil: {
       type: Date
+    },
+    restorationWorkerToken: {
+      type: String,
+      trim: true
     }
   },
   {

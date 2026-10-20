@@ -51,3 +51,48 @@ export async function connectDatabase(customUri?: string): Promise<typeof mongoo
 export function isDatabaseConnected(): boolean {
   return mongoose.connection.readyState === 1;
 }
+
+/**
+ * Detects whether the active MongoDB connection topology supports multi-document transactions.
+ * Transactions require a replica set (e.g. Atlas in production or local rs0) or a sharded cluster.
+ */
+export function isTransactionSupported(): boolean {
+  if (mongoose.connection.readyState !== 1) {
+    return false;
+  }
+  const client = (mongoose.connection as any).client;
+  const topology = client?.topology;
+  const descriptionType = topology?.description?.type;
+  if (descriptionType && descriptionType !== 'Single' && descriptionType !== 'Unknown') {
+    return true;
+  }
+  const servers = topology?.description?.servers;
+  if (servers) {
+    for (const server of servers.values()) {
+      if (server.setName) return true;
+    }
+  }
+  return false;
+}
+
+/**
+ * Explicitly initializes and verifies required critical database indexes before background workers start.
+ * Fails clearly if a required unique index cannot be verified or built.
+ */
+export async function initializeDatabaseIndexes(): Promise<void> {
+  const { InventoryRestoration } = await import('../models/InventoryRestoration');
+  const { Order } = await import('../models/Order');
+  const { Product } = await import('../models/Product');
+
+  try {
+    await Promise.all([
+      InventoryRestoration.init(),
+      Order.init(),
+      Product.init()
+    ]);
+  } catch (indexError: any) {
+    console.error('Fatal: Failed to verify or initialize required database indexes.');
+    console.error(`Index build failure: ${indexError?.message || indexError}`);
+    throw indexError;
+  }
+}

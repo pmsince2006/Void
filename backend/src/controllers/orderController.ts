@@ -316,6 +316,7 @@ export async function createOrder(req: Request, res: Response): Promise<void> {
     subtotal += lineTotal;
 
     orderItems.push({
+      lineItemId: crypto.randomUUID(),
       productId: product.id,
       name: product.name,
       slug: product.slug,

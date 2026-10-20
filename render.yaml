@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: void-backend
+    env: node
+    rootDir: backend
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: TRUST_PROXY
+        value: "1"
+      - key: COOKIE_SAME_SITE
+        value: "none"
+      - key: COOKIE_SECURE
+        value: "true"
+      - key: ORDER_EXPIRY_MINUTES
+        value: "60"
+      - key: JWT_SECRET
+        generateValue: true
+      - key: MONGODB_URI
+        sync: false
+      - key: FRONTEND_URL
+        sync: false

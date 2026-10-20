@@ -3,7 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
-import { connectDatabase, isDatabaseConnected } from './config/database';
+import { connectDatabase, isDatabaseConnected, initializeDatabaseIndexes } from './config/database';
 import { parseAllowedOrigins, isOriginAllowed } from './utils/origin';
 import { generalLimiter } from './middleware/rateLimiter';
 import { startOrderExpiryWorker } from './services/orderExpiryService';
@@ -135,6 +135,7 @@ app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
 // Async server startup: Connect to MongoDB before opening the HTTP port
 export async function startServer() {
   await connectDatabase();
+  await initializeDatabaseIndexes();
 
   // Start background order expiration worker only when the server is run directly
   startOrderExpiryWorker();
