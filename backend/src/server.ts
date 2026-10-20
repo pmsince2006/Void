@@ -7,6 +7,8 @@ import { connectDatabase, isDatabaseConnected } from './config/database';
 import authRoutes from './routes/authRoutes';
 import productRoutes from './routes/productRoutes';
 import collectionRoutes from './routes/collectionRoutes';
+import cartRoutes from './routes/cartRoutes';
+import wishlistRoutes from './routes/wishlistRoutes';
 
 // Load environment configuration from .env if present
 dotenv.config();
@@ -68,6 +70,8 @@ app.get('/api/health', (_req: Request, res: Response) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/collections', collectionRoutes);
+app.use('/api/cart', cartRoutes);
+app.use('/api/wishlist', wishlistRoutes);
 
 // 7. Catch-all 404 Handler for Unknown Routes
 app.use((req: Request, res: Response) => {
