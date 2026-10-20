@@ -45,6 +45,11 @@ export interface IOrder extends Document {
   orderStatus: OrderStatus;
   idempotencyKey?: string;
   notes?: string;
+  cancelledReason?: string;
+  cancelledAt?: Date;
+  inventoryRestored?: boolean;
+  restoredItems?: string[];
+  restorationLockedUntil?: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -232,6 +237,25 @@ const orderSchema = new Schema<IOrder>(
     notes: {
       type: String,
       trim: true
+    },
+    cancelledReason: {
+      type: String,
+      trim: true
+    },
+    cancelledAt: {
+      type: Date
+    },
+    inventoryRestored: {
+      type: Boolean,
+      default: false,
+      index: true
+    },
+    restoredItems: {
+      type: [String],
+      default: []
+    },
+    restorationLockedUntil: {
+      type: Date
     }
   },
   {
@@ -256,5 +280,8 @@ orderSchema.index(
 
 // Compound index for querying a user's orders sorted by date
 orderSchema.index({ userId: 1, createdAt: -1 });
+
+// Index for sweeping unpaid, pending orders during expiration sweeps
+orderSchema.index({ orderStatus: 1, paymentStatus: 1, createdAt: 1 });
 
 export const Order = model<IOrder>('Order', orderSchema);

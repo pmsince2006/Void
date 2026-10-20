@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import { connectDatabase, isDatabaseConnected } from './config/database';
 import { parseAllowedOrigins, isOriginAllowed } from './utils/origin';
 import { generalLimiter } from './middleware/rateLimiter';
+import { startOrderExpiryWorker } from './services/orderExpiryService';
 import authRoutes from './routes/authRoutes';
 import productRoutes from './routes/productRoutes';
 import collectionRoutes from './routes/collectionRoutes';
@@ -134,6 +135,9 @@ app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
 // Async server startup: Connect to MongoDB before opening the HTTP port
 export async function startServer() {
   await connectDatabase();
+
+  // Start background order expiration worker only when the server is run directly
+  startOrderExpiryWorker();
 
   const server = app.listen(PORT, () => {
     console.log(`VOID backend server running at http://localhost:${PORT}`);

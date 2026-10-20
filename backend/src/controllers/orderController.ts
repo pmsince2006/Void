@@ -119,6 +119,14 @@ export async function createOrder(req: Request, res: Response): Promise<void> {
   if (idempotencyKey) {
     const existingOrder = await Order.findOne({ userId, idempotencyKey });
     if (existingOrder) {
+      if (existingOrder.orderStatus === 'cancelled') {
+        res.status(409).json({
+          status: 'error',
+          message: 'Previous order attempt associated with this checkout session has expired or was cancelled. Please submit with a new checkout session.',
+          order: existingOrder
+        });
+        return;
+      }
       res.status(200).json({
         status: 'ok',
         message: 'Order already recorded (idempotent submission)',
@@ -381,6 +389,14 @@ export async function createOrder(req: Request, res: Response): Promise<void> {
     if (error.code === 11000 && idempotencyKey) {
       const existing = await Order.findOne({ userId, idempotencyKey });
       if (existing) {
+        if (existing.orderStatus === 'cancelled') {
+          res.status(409).json({
+            status: 'error',
+            message: 'Previous order attempt associated with this checkout session has expired or was cancelled.',
+            order: existing
+          });
+          return;
+        }
         res.status(200).json({
           status: 'ok',
           message: 'Order already recorded (concurrent race condition resolved)',

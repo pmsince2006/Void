@@ -7,14 +7,16 @@
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "test": "tsx src/tests/auth.test.ts && tsx src/tests/products.test.ts && tsx src/tests/cartWishlist.test.ts && tsx src/tests/orders.test.ts && tsx src/tests/productionConfig.test.ts && tsx src/tests/catalogueHardening.test.ts",
+    "test": "tsx src/tests/auth.test.ts && tsx src/tests/products.test.ts && tsx src/tests/cartWishlist.test.ts && tsx src/tests/orders.test.ts && tsx src/tests/productionConfig.test.ts && tsx src/tests/catalogueHardening.test.ts && tsx src/tests/orderExpiry.test.ts",
     "test:auth": "tsx src/tests/auth.test.ts",
     "test:products": "tsx src/tests/products.test.ts",
     "test:cart": "tsx src/tests/cartWishlist.test.ts",
     "test:orders": "tsx src/tests/orders.test.ts",
     "test:config": "tsx src/tests/productionConfig.test.ts",
     "test:hardening": "tsx src/tests/catalogueHardening.test.ts",
-    "seed": "tsx src/scripts/seedProducts.ts"
+    "test:expiry": "tsx src/tests/orderExpiry.test.ts",
+    "seed": "tsx src/scripts/seedProducts.ts",
+    "expire-orders": "tsx src/scripts/expireOrders.ts"
   },
   "keywords": [
     "void",
