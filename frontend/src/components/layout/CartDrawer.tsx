@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { X, ShoppingBag, Trash2, ArrowRight } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { PriceDisplay } from '../common/PriceDisplay';
@@ -6,6 +7,7 @@ import { QuantitySelector } from '../common/QuantitySelector';
 import { Button } from '../common/Button';
 
 export const CartDrawer: React.FC = () => {
+  const navigate = useNavigate();
   const {
     items,
     isOpen,
@@ -141,7 +143,8 @@ export const CartDrawer: React.FC = () => {
               className="w-full"
               rightIcon={<ArrowRight className="w-4 h-4" />}
               onClick={() => {
-                alert('VOID CHECKOUT TRANSMISSION INITIALIZED // All items held for 15 minutes.');
+                closeCart();
+                navigate('/checkout');
               }}
             >
               PROCEED TO SECURE CHECKOUT

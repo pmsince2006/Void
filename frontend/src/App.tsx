@@ -11,6 +11,7 @@ import { ProductDetailPage } from './pages/ProductDetailPage';
 import { CollectionsPage } from './pages/CollectionsPage';
 import { JournalPage } from './pages/JournalPage';
 import { AboutPage } from './pages/AboutPage';
+import { CheckoutPage } from './pages/CheckoutPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 // Scroll to top on route change helper
@@ -42,6 +43,7 @@ export function App() {
                   <Route path="journal" element={<JournalPage />} />
                   <Route path="style-discovery" element={<Navigate to="/journal" replace />} />
                   <Route path="about" element={<AboutPage />} />
+                  <Route path="checkout" element={<CheckoutPage />} />
                   <Route path="*" element={<NotFoundPage />} />
                 </Route>
               </Routes>
